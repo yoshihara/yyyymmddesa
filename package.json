@@ -1,0 +1,40 @@
+{
+  "name": "chrome-extention-base",
+  "version": "0.1.0",
+  "description": "TODO: extension description",
+  "main": "index.js",
+  "private": false,
+  "scripts": {
+    "package": "npm run build && zip package.zip build/**/*",
+    "clean": "rm -rf build/ && mkdir -p build",
+    "build:js": "webpack --config webpack.config.js",
+    "build:metadata": "rm -rf build/*.png build/manifest.json && cp -a metadata/* build/",
+    "build:html": "rm -rf build/*.html && pug -s src/pug -o build",
+    "build:css": "rm -rf build/*.css && node-sass -q src/sass -o build",
+    "build": "npm-run-all clean build:*",
+    "watch:js": "watchy -w src/js -w webpack.config.js -- npm run build:js",
+    "watch:metadata": "watchy -w metadata -- npm run build:metadata",
+    "watch:html": "watchy -w src/pug -- npm run build:html",
+    "watch:css": "watchy -w src/sass -- npm run build:css",
+    "watch": "npm-run-all clean -p watch:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "keywords": [],
+  "author": "yoshihara",
+  "license": "MIT",
+  "homepage": "http://TODO",
+  "devDependencies": {
+    "expose-loader": "^0.7.3",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.0.2",
+    "pug-cli": "^1.0.0-alpha6",
+    "watchy": "^0.7.0",
+    "webpack": "^3.5.4"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}

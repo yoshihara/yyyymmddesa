@@ -1,0 +1,49 @@
+{
+    "name": "TODO: extension name",
+    "version": "0.1",
+    "manifest_version": 2,
+
+    "description": "TODO: extension description",
+
+    "permissions": [
+        "activeTab",
+        "storage",
+        "contextMenus",
+        "alarms",
+        "notifications"
+    ],
+
+    "options_page": "options.html",
+
+    "background": {
+        "scripts": ["background.bundle.js"],
+        "persistent": false
+    },
+
+    "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content.bundle.js"]
+    }],
+
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+I",
+                "mac": "Command+I"
+            }
+        }
+    },
+
+    "browser_action": {
+        "default_icon": "icon19.png",
+        "default_title": "title",
+        "default_popup": "index.html"
+    },
+
+    "icons": {
+        "16"  : "icon19.png",
+        "48"  : "icon19.png",
+        "128" : "icon19.png"
+    }
+}
