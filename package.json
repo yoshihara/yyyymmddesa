@@ -1,7 +1,7 @@
 {
   "name": "yyyymmddesa",
   "version": "0.1.0",
-  "description": "TODO: extension description",
+  "description": "Tiny tools for daily report in esa.io",
   "main": "index.js",
   "private": false,
   "scripts": {
@@ -20,12 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "https://github.com/yoshihara/yyyymmddesa"
   },
-  "keywords": [],
+  "keywords": ["esa.io"],
   "author": "yoshihara",
   "license": "MIT",
-  "homepage": "http://TODO",
+  "homepage": "https://github.com/yoshihara/yyyymmddesa",
   "devDependencies": {
     "expose-loader": "^0.7.3",
     "node-sass": "^4.5.3",
