@@ -19,7 +19,7 @@
 
     "content_scripts": [
     {
-      "matches": ["https://github.com/*"],
+      "matches": ["https://*.esa.io/*"],
       "js": ["content.bundle.js"]
     }],
 
