@@ -3,7 +3,9 @@ html(lang="ja")
   head
     meta(charset="utf-8")
     link(rel="stylesheet" type="text/css" href="/options.css")
+    title yyyymmddesa config
   body
     .msg
-    p This is option page
+    input.options__token(placeholder="トークン" title="トークン")
+    button.options__save(type="button") Save Options
   script(src="/options.bundle.js")

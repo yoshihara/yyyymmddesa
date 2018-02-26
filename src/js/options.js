@@ -1,10 +1,15 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 $(function() {
-    var defaultMessage = {message: "オプションページを初めて開きました"};
-    chrome.storage.local.get(defaultMessage, function(message) {
-        $(".msg").text(message.message);
+  var defaultConfig = { token: "" };
+  chrome.storage.local.get(defaultConfig, function(config) {
+    $(".options__token").val(config.token);
+  });
 
-        chrome.storage.local.set({message: "もうオプションページ開いたことあるよ"}, function(message) {})
+  $(".options__save").on("click", function(e) {
+    const token = $(".options__token").val();
+    chrome.storage.local.set({ token: token }, function() {
+      $(".msg").text("saved!");
     });
+  });
 });
