@@ -11,7 +11,7 @@ const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 if (match) {
   const id = match[1];
   const category = Extractor.category();
-  const rootAndDate = category.match(/^(.+)\/(\d\d\d\d)\/(\d\d)(\/\d\d)?$/);
+  const rootAndDate = category.match(/^(.+)\/(\d\d\d\d)\/(\d\d)\/\d\d$/);
 
   if (rootAndDate) {
     const root = rootAndDate[1];
@@ -19,66 +19,90 @@ if (match) {
     const month = parseInt(rootAndDate[3]);
     const name = Extractor.name();
 
-    const range = [
-      new Date(year, month - 2),
-      new Date(year, month - 1),
-      new Date(year, month)
-    ];
+    const date = new Date(year, month - 1);
 
-    // TODO: 今月だけ渡す
-    (async (range, root, name, id) => {
-      let posts = await getRangePosts(range, root, name);
-      let nowPost = posts.filter(post => {
-        if (post.number == id) return post;
-      })[0];
-      let index = posts.indexOf(nowPost);
-      let prev = index - 1;
-      let next = index + 1;
+    (async (date, root, name, id) => {
+      let { prevPost, nextPost } = await getRangePosts(date, root, name, id);
 
       let target = $(`<div class='row yyyymmddesa-appended'></div>`);
 
-      if (prev >= 0) {
-        let prevPost = posts[prev];
-        target.append(`<a href='${prevPost.url}' style='float:left;'>${prevPost.full_name}</a>`);
+      if (prevPost) {
+        target.append(
+          `<a href='${prevPost.url}' style='float:left;'>${
+            prevPost.full_name
+          }</a>`
+        );
       }
-      if (next < posts.length) {
-        let nextPost = posts[next];
-        target.append(`<a href='${nextPost.url}' style='float:right;'>${nextPost.full_name}</a>`)
+      if (nextPost) {
+        target.append(
+          `<a href='${nextPost.url}' style='float:right;'>${
+            nextPost.full_name
+          }</a>`
+        );
       }
       $(".post-prev-next").append(target);
-
-    })(range, root, name, id);
+    })(date, root, name, id);
   }
 }
 
-function getRangePosts(range, root, name) {
+function getRangePosts(date, root, name, id) {
   return new Promise((resolve, _reject) => {
-    (async (range, root, name) => {
+    (async (date, root, name, id) => {
       let monthPosts = {};
       const token = await getToken();
       const esa = new Esa(token);
 
-      for (let i = 0; i < range.length; i++) {
-        let date = range[i];
-        // 今月の記事のキャッシュがあればそれを取得
-        // ない場合は取ってくる
-        // 今月の記事の中での自分の位置を確認
-        // 今月の記事が自分より後ろがあればnextは取得しなくて良い
-        // 後ろがない場合は今月と次の月を取ってくる
-        // 今月の記事が自分より前があればprevは取得しなくて良い
-        // 前がない場合は今月と前の月を取ってくる
+      const range = [
+        new Date(date.getFullYear(), date.getMonth() - 2),
+        date,
+        new Date(date.getFullYear(), date.getMonth())
+      ];
 
-        let q = query(root, date, name);
+      // TODO: 今月のキャッシュを取ってくる
+      let q = query(root, date, name);
+      let thisMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
 
-        // TODO: このへんで取得した記事のキャッシュが必要 {yyyymm => posts}
-        let parsedPosts = JSON.parse(await esa.getPosts(q)).posts;
-        monthPosts[date] = parsedPosts;
+      let index = fetchIndex(thisMonthPosts, id);
+      let prev = index - 1;
+      let next = index + 1;
+
+      if (index == -1 || prev < 0 || next >= thisMonthPosts.length) {
+        thisMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
       }
 
-      const flatten = (accumulator, currentValue) => accumulator.concat(currentValue);
-      const posts = Object.values(monthPosts).reduce(flatten);
-      return sortPosts(posts);
-    })(range, root, name)
+      let prevMonthPosts = [];
+      if (prev < 0) {
+        let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
+        let q = query(root, prevMonth, name);
+        prevMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
+        // TODO: キャッシュ保存
+      }
+
+      let nextMonthPosts = [];
+      if (next >= thisMonthPosts.length) {
+        let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+        let q = query(root, nextMonth, name);
+        nextMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
+        // TODO: キャッシュ保存
+      }
+
+      // 取得した記事を繋いだ状態でindexを取り直す
+      const flatten = (accumulator, currentValue) =>
+        accumulator.concat(currentValue);
+      console.log([prevMonthPosts, thisMonthPosts, nextMonthPosts]);
+      let posts = Object.values([
+        prevMonthPosts,
+        thisMonthPosts,
+        nextMonthPosts
+      ]).reduce(flatten);
+      posts = sortPosts(posts);
+      index = fetchIndex(posts, id);
+      prev = index - 1;
+      next = index + 1;
+
+      console.log(posts, index);
+      return { prevPost: posts[prev], nextPost: posts[next] };
+    })(date, root, name, id)
       .then(posts => {
         resolve(posts);
       })
@@ -112,4 +136,12 @@ function sortPosts(res) {
     else if (ac < bc) return -1;
     else return 0;
   });
+}
+
+function fetchIndex(posts, id) {
+  let post = posts.filter(post => {
+    if (post.number == id) return post;
+  })[0];
+
+  return posts.indexOf(post);
 }
