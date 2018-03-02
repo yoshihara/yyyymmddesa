@@ -49,7 +49,7 @@ if (match) {
 function getRangePosts(range, root, name) {
   return new Promise((resolve, _reject) => {
     (async (range, root, name) => {
-      let posts = [];
+      let monthPosts = {};
       const token = await getToken();
       const esa = new Esa(token);
 
@@ -64,9 +64,14 @@ function getRangePosts(range, root, name) {
         // 前がない場合は今月と前の月を取ってくる
 
         let q = query(root, date, name);
+
         // TODO: このへんで取得した記事のキャッシュが必要 {yyyymm => posts}
-        posts = posts.concat(JSON.parse(await esa.getPosts(q)).posts);
+        let parsedPosts = JSON.parse(await esa.getPosts(q)).posts;
+        monthPosts[date] = parsedPosts;
       }
+
+      const flatten = (accumulator, currentValue) => accumulator.concat(currentValue);
+      const posts = Object.values(monthPosts).reduce(flatten);
       return sortPosts(posts);
     })(range, root, name)
       .then(posts => {
