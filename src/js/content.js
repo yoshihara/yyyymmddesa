@@ -1,5 +1,6 @@
 "use strict";
 
+import $ from "jquery";
 import Extractor from "./lib/extractor.js";
 import Esa from "./lib/esa.js";
 import Formatter from "./lib/formatter.js";
@@ -34,14 +35,18 @@ if (match) {
       let prev = index - 1;
       let next = index + 1;
 
-      console.log(posts)
-      // それぞれのconsole.logしてるpostからリンク作って何処かに置く
+      let target = $(`<div class='row yyyymmddesa-appended'></div>`);
+
       if (prev >= 0) {
-        console.log(posts[prev]);
+        let prevPost = posts[prev];
+        target.append(`<a href='${prevPost.url}' style='float:left;'>${prevPost.full_name}</a>`);
       }
       if (next < posts.length) {
-        console.log(posts[next]);
+        let nextPost = posts[next];
+        target.append(`<a href='${nextPost.url}' style='float:right;'>${nextPost.full_name}</a>`)
       }
+      $(".post-prev-next").append(target);
+
     })(range, root, name, id);
   }
 }
