@@ -4,6 +4,7 @@ import $ from "jquery";
 import Extractor from "./lib/extractor.js";
 import Esa from "./lib/esa.js";
 import Formatter from "./lib/formatter.js";
+import Store from "./lib/store.js";
 
 const path = window.location.pathname;
 const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
@@ -49,20 +50,20 @@ function getRangePosts(date, root, name, id) {
   return new Promise((resolve, _reject) => {
     (async (date, root, name, id) => {
       let monthPosts = {};
-      const token = await getToken();
+      const token = await Store.getToken();
       const esa = new Esa(token);
 
       // TODO: この辺からの、dateを引数にキャッシュを取ってきて、無かったらesaからfetchするのをくくりだして、↓でやってるprevやnextのfetchを置き換える
       let q;
       let thisMonthPosts;
-      let cache = await getCache(date, root, name);
+      let cache = await Store.getCache(date, root, name);
 
       if (cache !== []) {
         thisMonthPosts = cache;
       } else {
         q = query(root, date, name);
         thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts;
-        setCache(date, root, name, thisMonthPosts);
+        Store.setCache(date, root, name, thisMonthPosts);
       }
       thisMonthPosts = sortPosts(thisMonthPosts);
 
@@ -81,7 +82,7 @@ function getRangePosts(date, root, name, id) {
         let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
         let q = query(root, prevMonth, name);
         prevMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        setCache(prevMonth, root, name, prevMonthPosts);
+        Store.setCache(prevMonth, root, name, prevMonthPosts);
       }
 
       let nextMonthPosts = [];
@@ -89,7 +90,7 @@ function getRangePosts(date, root, name, id) {
         let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
         let q = query(root, nextMonth, name);
         nextMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        setCache(nextMonth, root, name, nextMonthPosts);
+        Store.setCache(nextMonth, root, name, nextMonthPosts);
       }
 
       // 取得した記事を繋いだ状態でindexを取り直す
@@ -123,42 +124,6 @@ function query(root, date, name) {
   return {
     q: `in:${root}/${Formatter.formatCategory(date)}/ title:${name}`
   };
-}
-
-function getToken() {
-  return new Promise((resolve, _reject) => {
-    chrome.storage.local.get({ token: null }, function(config) {
-      resolve(config.token);
-    });
-  });
-}
-
-// TODO: getCache/setCacheの引数のうちpostsは{number, full_name, url}だけにする
-// TODO: getCache/setCacheの引数のうちposts以外はオブジェクトで渡す
-function getCache(date, root, name) {
-  const key = `${date.getFullYear()}${date.getMonth() + 1}-${root}-${name}`;
-  console.log("get cache", key);
-  let defaultCache = {};
-  defaultCache[key] = "[]";
-
-  return new Promise((resolve, _reject) => {
-    chrome.storage.local.get({ cache: defaultCache }, function(cache) {
-      resolve(JSON.parse(cache["cache"])[key] || []);
-    });
-  });
-}
-
-function setCache(date, root, name, posts) {
-  const key = `${date.getFullYear()}${date.getMonth() + 1}-${root}-${name}`;
-  console.log("set cache", key, posts);
-  let cache = {};
-  cache[key] = posts;
-
-  return new Promise((resolve, _reject) => {
-    chrome.storage.local.set({ cache: JSON.stringify(cache) }, function(cache) {
-      resolve(cache);
-    });
-  });
 }
 
 function sortPosts(res) {
