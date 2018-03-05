@@ -52,21 +52,27 @@ function getRangePosts(date, root, name, id) {
       const token = await getToken();
       const esa = new Esa(token);
 
-      const range = [
-        new Date(date.getFullYear(), date.getMonth() - 2),
-        date,
-        new Date(date.getFullYear(), date.getMonth())
-      ];
+      // TODO: この辺からの、dateを引数にキャッシュを取ってきて、無かったらesaからfetchするのをくくりだして、↓でやってるprevやnextのfetchを置き換える
+      let q;
+      let thisMonthPosts;
+      let cache = await getCache(date, name);
 
-      // TODO: 今月のキャッシュを取ってくる
-      let q = query(root, date, name);
-      let thisMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
+      if (cache !== []) {
+        thisMonthPosts = JSON.parse(cache);
+      } else {
+        q = query(root, date, name);
+        thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts
+        setCache(date, name, thisMonthPosts)
+      }
+      thisMonthPosts = sortPosts(thisMonthPosts);
 
       let index = fetchIndex(thisMonthPosts, id);
       let prev = index - 1;
       let next = index + 1;
 
+      // 再取得
       if (index == -1 || prev < 0 || next >= thisMonthPosts.length) {
+        q = query(root, date, name);
         thisMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
       }
 
@@ -75,7 +81,7 @@ function getRangePosts(date, root, name, id) {
         let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
         let q = query(root, prevMonth, name);
         prevMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        // TODO: キャッシュ保存
+        setCache(prevMonth, name, prevMonthPosts)
       }
 
       let nextMonthPosts = [];
@@ -83,7 +89,7 @@ function getRangePosts(date, root, name, id) {
         let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
         let q = query(root, nextMonth, name);
         nextMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        // TODO: キャッシュ保存
+        setCache(nextMonth, name, nextMonthPosts)
       }
 
       // 取得した記事を繋いだ状態でindexを取り直す
@@ -123,6 +129,32 @@ function getToken() {
   return new Promise((resolve, _reject) => {
     chrome.storage.local.get({ token: null }, function(config) {
       resolve(config.token);
+    });
+  });
+}
+
+function getCache(date, name) {
+  console.log('get cache', date, name)
+  const key = `${date.getFullYear()}${date.getMonth() + 1}-${name}`
+  let defaultCache = {};
+  defaultCache[key] = "[]";
+
+  return new Promise((resolve, _reject) => {
+    chrome.storage.local.get(defaultCache, function(cache) {
+      resolve(cache[key]);
+    });
+  });
+}
+
+function setCache(date, name, posts) {
+  console.log('set cache', date, name, posts)
+  const key = `${date.getFullYear()}${date.getMonth() + 1}-${name}`
+  let cache = {};
+  cache[key] = JSON.stringify(posts);
+
+  return new Promise((resolve, _reject) => {
+    chrome.storage.local.set(cache, function(cache) {
+      resolve(cache);
     });
   });
 }
