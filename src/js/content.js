@@ -55,14 +55,14 @@ function getRangePosts(date, root, name, id) {
       // TODO: この辺からの、dateを引数にキャッシュを取ってきて、無かったらesaからfetchするのをくくりだして、↓でやってるprevやnextのfetchを置き換える
       let q;
       let thisMonthPosts;
-      let cache = await getCache(date, name);
+      let cache = await getCache(date, root, name);
 
       if (cache !== []) {
-        thisMonthPosts = JSON.parse(cache);
+        thisMonthPosts = cache;
       } else {
         q = query(root, date, name);
-        thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts
-        setCache(date, name, thisMonthPosts)
+        thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts;
+        setCache(date, root, name, thisMonthPosts);
       }
       thisMonthPosts = sortPosts(thisMonthPosts);
 
@@ -81,7 +81,7 @@ function getRangePosts(date, root, name, id) {
         let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
         let q = query(root, prevMonth, name);
         prevMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        setCache(prevMonth, name, prevMonthPosts)
+        setCache(prevMonth, root, name, prevMonthPosts);
       }
 
       let nextMonthPosts = [];
@@ -89,7 +89,7 @@ function getRangePosts(date, root, name, id) {
         let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
         let q = query(root, nextMonth, name);
         nextMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        setCache(nextMonth, name, nextMonthPosts)
+        setCache(nextMonth, root, name, nextMonthPosts);
       }
 
       // 取得した記事を繋いだ状態でindexを取り直す
@@ -133,27 +133,29 @@ function getToken() {
   });
 }
 
-function getCache(date, name) {
-  console.log('get cache', date, name)
-  const key = `${date.getFullYear()}${date.getMonth() + 1}-${name}`
+// TODO: getCache/setCacheの引数のうちpostsは{number, full_name, url}だけにする
+// TODO: getCache/setCacheの引数のうちposts以外はオブジェクトで渡す
+function getCache(date, root, name) {
+  const key = `${date.getFullYear()}${date.getMonth() + 1}-${root}-${name}`;
+  console.log("get cache", key);
   let defaultCache = {};
   defaultCache[key] = "[]";
 
   return new Promise((resolve, _reject) => {
-    chrome.storage.local.get(defaultCache, function(cache) {
-      resolve(cache[key]);
+    chrome.storage.local.get({ cache: defaultCache }, function(cache) {
+      resolve(JSON.parse(cache["cache"])[key] || []);
     });
   });
 }
 
-function setCache(date, name, posts) {
-  console.log('set cache', date, name, posts)
-  const key = `${date.getFullYear()}${date.getMonth() + 1}-${name}`
+function setCache(date, root, name, posts) {
+  const key = `${date.getFullYear()}${date.getMonth() + 1}-${root}-${name}`;
+  console.log("set cache", key, posts);
   let cache = {};
-  cache[key] = JSON.stringify(posts);
+  cache[key] = posts;
 
   return new Promise((resolve, _reject) => {
-    chrome.storage.local.set(cache, function(cache) {
+    chrome.storage.local.set({ cache: JSON.stringify(cache) }, function(cache) {
       resolve(cache);
     });
   });
