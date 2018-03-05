@@ -22,8 +22,18 @@ if (match) {
 
     const date = new Date(year, month - 1);
 
+    let prevPost, nextPost;
     (async (date, root, name, id) => {
-      let { prevPost, nextPost } = await getRangePosts(date, root, name, id);
+      await getRangePosts(date, root, name, id)
+        .then(posts => {
+          prevPost = posts.prevPost;
+          nextPost = posts.nextPost;
+        })
+        .catch(err => {
+          console.log("Error occured in fetch:");
+          console.error(err);
+          return;
+        });
 
       let target = $(`<div class='row yyyymmddesa-appended'></div>`);
 
@@ -46,70 +56,59 @@ if (match) {
   }
 }
 
-function getRangePosts(date, root, name, id) {
-  return new Promise((resolve, _reject) => {
-    (async (date, root, name, id) => {
-      let q;
-      let monthPosts = {};
-      const token = await Store.getToken();
-      const esa = new Esa(token);
+async function getRangePosts(date, root, name, id) {
+  let q;
+  let monthPosts = {};
+  const token = await Store.getToken();
+  const esa = new Esa(token);
 
-      let thisMonthPosts;
-      await fetchPosts(token, date, root, name).then((post) => {
-        thisMonthPosts = post;
-      })
-
-      let index = fetchIndex(thisMonthPosts, id);
-      let prev = index - 1;
-      let next = index + 1;
-
-      // 再取得
-      if (index == -1 || prev < 0 || next >= thisMonthPosts.length) {
-        q = query(root, date, name);
-        thisMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-      }
-
-      let prevMonthPosts = [];
-      if (prev < 0) {
-        let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
-        let q = query(root, prevMonth, name);
-        prevMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        Store.setCache(prevMonth, root, name, prevMonthPosts);
-      }
-
-      let nextMonthPosts = [];
-      if (next >= thisMonthPosts.length) {
-        let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
-        let q = query(root, nextMonth, name);
-        nextMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
-        Store.setCache(nextMonth, root, name, nextMonthPosts);
-      }
-
-      // 取得した記事を繋いだ状態でindexを取り直す
-      const flatten = (accumulator, currentValue) =>
-        accumulator.concat(currentValue);
-      console.log([prevMonthPosts, thisMonthPosts, nextMonthPosts]);
-      let posts = Object.values([
-        prevMonthPosts,
-        thisMonthPosts,
-        nextMonthPosts
-      ]).reduce(flatten);
-      posts = sortPosts(posts);
-      index = fetchIndex(posts, id);
-      prev = index - 1;
-      next = index + 1;
-
-      console.log(posts, index);
-      return { prevPost: posts[prev], nextPost: posts[next] };
-    })(date, root, name, id)
-      .then(posts => {
-        resolve(posts);
-      })
-      .catch(err => {
-        console.log("Error occured:");
-        console.error(err);
-      });
+  let thisMonthPosts;
+  await fetchPosts(token, date, root, name).then(post => {
+    thisMonthPosts = post;
   });
+
+  let index = fetchIndex(thisMonthPosts, id);
+  let prev = index - 1;
+  let next = index + 1;
+
+  // 再取得
+  if (index == -1 || prev < 0 || next >= thisMonthPosts.length) {
+    q = query(root, date, name);
+    thisMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
+  }
+
+  let prevMonthPosts = [];
+  if (prev < 0) {
+    let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
+    let q = query(root, prevMonth, name);
+    prevMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
+    Store.setCache(prevMonth, root, name, prevMonthPosts);
+  }
+
+  let nextMonthPosts = [];
+  if (next >= thisMonthPosts.length) {
+    let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+    let q = query(root, nextMonth, name);
+    nextMonthPosts = sortPosts(JSON.parse(await esa.getPosts(q)).posts);
+    Store.setCache(nextMonth, root, name, nextMonthPosts);
+  }
+
+  // 取得した記事を繋いだ状態でindexを取り直す
+  const flatten = (accumulator, currentValue) =>
+    accumulator.concat(currentValue);
+  console.log([prevMonthPosts, thisMonthPosts, nextMonthPosts]);
+  let posts = Object.values([
+    prevMonthPosts,
+    thisMonthPosts,
+    nextMonthPosts
+  ]).reduce(flatten);
+  posts = sortPosts(posts);
+  index = fetchIndex(posts, id);
+  prev = index - 1;
+  next = index + 1;
+
+  console.log(posts, index);
+  return { prevPost: posts[prev], nextPost: posts[next] };
 }
 
 // TODO: esaに移動してtokenわたすのをやめる
@@ -128,7 +127,6 @@ async function fetchPosts(token, date, root, name) {
     await Store.setCache(date, root, name, posts);
     return sortPosts(posts);
   }
-
 }
 function query(root, date, name) {
   return {
