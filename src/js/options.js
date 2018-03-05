@@ -14,8 +14,19 @@ $(function() {
   });
 
   $(".options__clear").on("click", function(e) {
-    chrome.storage.local.remove("cache", function() {
-      $(".msg").text("Removed cache!");
+    chrome.storage.local.get(null, function(cache) {
+      let removedKeys = [];
+      removedKeys = Object.keys(cache).filter((key) => {
+        if (key.startsWith("cache-")) return key
+        return null;
+      })
+
+      chrome.storage.local.remove(removedKeys, function(error) {
+        let message = ""
+        if (error) message = "Failed removing cache..."
+        else message = "Removed cache!";
+        $(".msg").text(message);
+      })
     });
   });
 });
