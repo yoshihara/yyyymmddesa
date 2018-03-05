@@ -5,7 +5,18 @@ html(lang="ja")
     link(rel="stylesheet" type="text/css" href="/options.css")
     title yyyymmddesa config
   body
-    .msg
-    input.options__token(placeholder="トークン" title="トークン")
-    button.options__save(type="button") Save Options
+    .container
+      h2 options
+      .row
+        .msg
+      .row
+        .form-items
+          label esa token
+        .form-items
+          input.options__token(placeholder="トークン" title="トークン")
+        .form-items
+          button.options__save(type="button") Save Options
+      .row
+        .form-items
+          button.options__clear(type="button") Clear cache
   script(src="/options.bundle.js")
