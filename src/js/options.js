@@ -12,4 +12,10 @@ $(function() {
       $(".msg").text("saved!");
     });
   });
+
+  $(".options__clear").on("click", function(e) {
+    chrome.storage.local.remove("cache", function() {
+      $(".msg").text("Removed cache!");
+    });
+  });
 });
