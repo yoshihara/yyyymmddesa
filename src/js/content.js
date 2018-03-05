@@ -49,23 +49,15 @@ if (match) {
 function getRangePosts(date, root, name, id) {
   return new Promise((resolve, _reject) => {
     (async (date, root, name, id) => {
+      let q;
       let monthPosts = {};
       const token = await Store.getToken();
       const esa = new Esa(token);
 
-      // TODO: この辺からの、dateを引数にキャッシュを取ってきて、無かったらesaからfetchするのをくくりだして、↓でやってるprevやnextのfetchを置き換える
-      let q;
       let thisMonthPosts;
-      let cache = await Store.getCache(date, root, name);
-
-      if (cache !== []) {
-        thisMonthPosts = cache;
-      } else {
-        q = query(root, date, name);
-        thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts;
-        Store.setCache(date, root, name, thisMonthPosts);
-      }
-      thisMonthPosts = sortPosts(thisMonthPosts);
+      await fetchPosts(token, date, root, name).then((post) => {
+        thisMonthPosts = post;
+      })
 
       let index = fetchIndex(thisMonthPosts, id);
       let prev = index - 1;
@@ -120,6 +112,24 @@ function getRangePosts(date, root, name, id) {
   });
 }
 
+// TODO: esaに移動してtokenわたすのをやめる
+async function fetchPosts(token, date, root, name) {
+  const esa = new Esa(token);
+
+  let cache = await Store.getCache(date, root, name);
+  if (cache.length > 0) {
+    return cache;
+  } else {
+    let q;
+    let posts;
+
+    q = query(root, date, name);
+    posts = JSON.parse(await esa.getPosts(q)).posts;
+    await Store.setCache(date, root, name, posts);
+    return sortPosts(posts);
+  }
+
+}
 function query(root, date, name) {
   return {
     q: `in:${root}/${Formatter.formatCategory(date)}/ title:${name}`
