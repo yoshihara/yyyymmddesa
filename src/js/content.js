@@ -24,6 +24,12 @@ if (match) {
     const date = new moment(yearAndMonth, "YYYY/MM")
 
     let prevPost, nextPost;
+
+    let target = $(`<div class='row yyyymmddesa-appended'></div>`);
+    let spinner = $("<div style='font-size: 3em; color: #4dc1bb; text-align:center'><i class='fa fa-spinner fa-spin'></i></div>");
+    target.append(spinner)
+    $(".post-prev-next").append(target);
+
     (async (date, root, name, id) => {
       await getRangePosts(date, root, name, id)
         .then(posts => {
@@ -36,7 +42,7 @@ if (match) {
           return;
         });
 
-      let target = $(`<div class='row yyyymmddesa-appended'></div>`);
+      target.empty()
 
       if (prevPost) {
         target.append(
@@ -52,7 +58,6 @@ if (match) {
           }</a>`
         );
       }
-      $(".post-prev-next").append(target);
     })(date, root, name, id);
   }
 }
