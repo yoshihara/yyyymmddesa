@@ -1,5 +1,4 @@
 import Store from "./store.js";
-import Formatter from "./formatter.js";
 
 export default class Fetcher {
   constructor(esa) {
@@ -26,7 +25,7 @@ export default class Fetcher {
 
   query(root, date, name) {
     return {
-      q: `in:${root}/${Formatter.formatCategory(date)}/ title:${name}`
+      q: `in:${root}/${date.format("Y/MM")}/ title:${name}`
     };
   }
 }

@@ -5,7 +5,6 @@ import moment from "moment";
 
 import Extractor from "./lib/extractor.js";
 import Esa from "./lib/esa.js";
-import Formatter from "./lib/formatter.js";
 import Store from "./lib/store.js";
 import Fetcher from "./lib/fetcher.js";
 
