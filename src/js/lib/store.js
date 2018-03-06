@@ -12,8 +12,7 @@ export default class Store {
   // TODO: getCache/setCacheの引数のうちpostsは{number, full_name, url}だけにする
   // TODO: getCache/setCacheの引数のうちposts以外はオブジェクトで渡す
   static getCache(date, root, name) {
-    const key = `cache-${date.getFullYear()}${date.getMonth() +
-      1}-${root}-${name}`;
+    const key = `cache-${date.format("YMM")}-${root}-${name}`;
     console.log("get cache", key);
     let cache = {};
     cache[key] = "[]";
@@ -26,8 +25,7 @@ export default class Store {
   }
 
   static setCache(date, root, name, posts) {
-    const key = `cache-${date.getFullYear()}${date.getMonth() +
-      1}-${root}-${name}`;
+    const key = `cache-${date.format("YMM")}-${root}-${name}`;
     console.log("set cache", key, posts);
     let defaultCache = {};
     defaultCache[key] = JSON.stringify(posts);

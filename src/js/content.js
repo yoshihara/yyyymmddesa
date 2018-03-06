@@ -1,6 +1,8 @@
 "use strict";
 
 import $ from "jquery";
+import moment from "moment";
+
 import Extractor from "./lib/extractor.js";
 import Esa from "./lib/esa.js";
 import Formatter from "./lib/formatter.js";
@@ -13,15 +15,14 @@ const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 if (match) {
   const id = match[1];
   const category = Extractor.category();
-  const rootAndDate = category.match(/^(.+)\/(\d\d\d\d)\/(\d\d)\/\d\d$/);
+  const rootAndDate = category.match(/^(.+)\/(\d\d\d\d\/\d\d)\/\d\d$/);
 
   if (rootAndDate) {
     const root = rootAndDate[1];
-    const year = rootAndDate[2];
-    const month = parseInt(rootAndDate[3]);
+    const yearAndMonth = rootAndDate[2];
     const name = Extractor.name();
 
-    const date = new Date(year, month - 1);
+    const date = new moment(yearAndMonth, "YYYY/MM")
 
     let prevPost, nextPost;
     (async (date, root, name, id) => {
@@ -90,7 +91,7 @@ async function getRangePosts(date, root, name, id) {
 
   let prevMonthPosts = [];
   if (prev < 0) {
-    let prevMonth = new Date(date.getFullYear(), date.getMonth() - 1);
+    let prevMonth = date.clone().substruct(1, "month").startOf("month");
     await fetcher.fetchPosts(prevMonth, root, name).then(post => {
       prevMonthPosts = post;
     });
@@ -98,7 +99,7 @@ async function getRangePosts(date, root, name, id) {
 
   let nextMonthPosts = [];
   if (next >= thisMonthPosts.length) {
-    let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+    let nextMonth = date.clone().add(1,"month").startOf("month")
     await fetcher.fetchPosts(nextMonth, root, name).then(post => {
       nextMonthPosts = post;
     });
