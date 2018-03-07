@@ -154,8 +154,8 @@ function fetchIndex(posts, id) {
 
 function sortPosts(res) {
   return res.sort((a, b) => {
-    let ac = a.category;
-    let bc = b.category;
+    let ac = a.full_name;
+    let bc = b.full_name;
 
     if (ac > bc) return 1;
     else if (ac < bc) return -1;

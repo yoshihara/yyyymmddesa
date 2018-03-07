@@ -9,7 +9,6 @@ export default class Store {
     });
   }
 
-  // TODO: getCache/setCacheの引数のうちpostsは{number, full_name, url}だけにする
   static getCache(obj) {
     const key = this.key(obj);
     console.log("get cache", key);
@@ -25,9 +24,13 @@ export default class Store {
 
   static setCache(obj, posts) {
     const key = this.key(obj);
-    console.log("set cache", key, posts);
+    const cache = posts.map(post => {
+      let { number, full_name, url } = post;
+      return { number, full_name, url };
+    });
+    console.log("set cache", key, cache);
     let defaultCache = {};
-    defaultCache[key] = JSON.stringify(posts);
+    defaultCache[key] = JSON.stringify(cache);
 
     return new Promise((resolve, reject) => {
       chrome.storage.local.set(defaultCache, function(error) {
