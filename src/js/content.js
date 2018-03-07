@@ -95,7 +95,10 @@ async function getRangePosts(date, root, name, id) {
 
   let prevMonthPosts = [];
   if (prev < 0) {
-    let prevMonth = date.clone().substruct(1, "month").startOf("month");
+    let prevMonth = date
+      .clone()
+      .subtract(1, "month")
+      .startOf("month");
     await fetcher.fetchPosts(prevMonth, root, name).then(post => {
       prevMonthPosts = post;
     });
@@ -103,7 +106,10 @@ async function getRangePosts(date, root, name, id) {
 
   let nextMonthPosts = [];
   if (next >= thisMonthPosts.length) {
-    let nextMonth = date.clone().add(1,"month").startOf("month")
+    let nextMonth = date
+      .clone()
+      .add(1, "month")
+      .startOf("month");
     await fetcher.fetchPosts(nextMonth, root, name).then(post => {
       nextMonthPosts = post;
     });
