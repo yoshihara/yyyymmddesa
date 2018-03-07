@@ -7,7 +7,7 @@ export default class Fetcher {
 
   async fetchPosts(date, root, name) {
     console.log({ fetch: [date, root, name] });
-    let cache = await Store.getCache(date, root, name);
+    let cache = await Store.getCache({ date, root, name });
     console.log({ cache });
     if (cache !== null) {
       console.log({ CacheHit: { date, root, name } });
