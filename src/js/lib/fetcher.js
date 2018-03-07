@@ -18,7 +18,9 @@ export default class Fetcher {
 
       q = this.query(root, date, name);
       posts = JSON.parse(await this.esa.getPosts(q)).posts;
-      await Store.setCache({ date, root, name }, posts);
+      Store.setCache({ date, root, name }, posts).catch(error => {
+        console.error(chrome.runtime.lastError, error);
+      });
       return posts;
     }
   }

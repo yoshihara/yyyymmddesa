@@ -98,7 +98,9 @@ async function getRangePosts(date, root, name, id) {
     q = fetcher.query(root, date, name);
     // TODO: ここだけgetPosts生なのでfetcherに何かしらAPI追加する
     thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts;
-    Store.setCache({ date, root, name }, thisMonthPosts);
+    Store.setCache({ date, root, name }, thisMonthPosts).catch(error => {
+      console.error(chrome.runtime.lastError, error);
+    });
 
     index = fetchIndex(thisMonthPosts, id);
     prev = index - 1;
