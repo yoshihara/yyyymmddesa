@@ -155,12 +155,12 @@ function fetchIndex(posts, id) {
 }
 
 function sortPosts(res) {
-  return res.sort((a, b) => {
-    let ac = a.full_name;
-    let bc = b.full_name;
+  return res.sort((post1, post2) => {
+    let fullName1 = post1.full_name;
+    let fullName2 = post2.full_name;
 
-    if (ac > bc) return 1;
-    else if (ac < bc) return -1;
+    if (fullName1 > fullName2) return 1;
+    else if (fullName1 < fullName2) return -1;
     else return 0;
   });
 }
