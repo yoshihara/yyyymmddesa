@@ -15,7 +15,7 @@ export default class Store {
     const key = `cache-${date.format("YMM")}-${root}-${name}`;
     console.log("get cache", key);
     let cache = {};
-    cache[key] = "[]";
+    cache[key] = null;
 
     return new Promise((resolve, _reject) => {
       chrome.storage.local.get(cache, function(cache) {

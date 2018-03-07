@@ -9,7 +9,7 @@ export default class Fetcher {
     console.log({ fetch: [date, root, name] });
     let cache = await Store.getCache(date, root, name);
     console.log({ cache });
-    if (cache.length > 0) {
+    if (cache !== null) {
       console.log({ CacheHit: { date, root, name } });
       return cache;
     } else {
