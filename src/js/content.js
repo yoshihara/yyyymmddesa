@@ -21,13 +21,15 @@ if (match) {
     const yearAndMonth = rootAndDate[2];
     const name = Extractor.name();
 
-    const date = new moment(yearAndMonth, "YYYY/MM")
+    const date = new moment(yearAndMonth, "YYYY/MM");
 
     let prevPost, nextPost;
 
     let target = $(`<div class='row yyyymmddesa-appended'></div>`);
-    let spinner = $("<div style='font-size: 3em; color: #4dc1bb; text-align:center'><i class='fa fa-spinner fa-spin'></i></div>");
-    target.append(spinner)
+    let spinner = $(
+      "<div style='font-size: 3em; color: #4dc1bb; text-align:center'><i class='fa fa-spinner fa-spin'></i></div>"
+    );
+    target.append(spinner);
     $(".post-prev-next").append(target);
 
     (async (date, root, name, id) => {
@@ -42,7 +44,7 @@ if (match) {
           return;
         });
 
-      target.empty()
+      target.empty();
 
       if (prevPost) {
         target.append(
