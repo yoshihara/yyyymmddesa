@@ -66,7 +66,6 @@ if (match) {
 
 async function getRangePosts(date, root, name, id) {
   let q;
-  let monthPosts = {};
   const token = await Store.getToken();
   const esa = new Esa(token);
   const fetcher = new Fetcher(esa);
