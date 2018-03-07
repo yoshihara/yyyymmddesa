@@ -81,9 +81,16 @@ async function getRangePosts(date, root, name, id) {
 
   console.log({ index, prev, next });
 
-  // 再取得
-  // TODO: prev < && dateが月初ではない、 next >= thisMonthPosts.length && dateが月末ではない を追加する
-  if (index == -1 || prev < 0 || next >= thisMonthPosts.length) {
+  // prev, nextが取得できない、かつその月にprev, nextがありそうなときだけ再取得
+  // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
+  let firstDate = date.clone().startOf("month");
+  let lastDate = date.clone().endOf("month");
+
+  if (
+    index == -1 ||
+    (prev < 0 && !date.isSame(firstDate)) ||
+    (next >= thisMonthPosts.length && !date.isSame(lastDate))
+  ) {
     q = fetcher.query(root, date, name);
     // TODO: ここだけgetPosts生なのでfetcherに何かしらAPI追加する
     thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts;
