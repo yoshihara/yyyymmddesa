@@ -6,7 +6,6 @@
     "description": "Tiny tools for daily report in esa.io",
 
     "permissions": [
-        "activeTab",
         "storage"
     ],
 
