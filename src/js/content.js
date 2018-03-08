@@ -25,12 +25,16 @@ if (match) {
 
     let prevPost, nextPost;
 
-    let target = $(`<div class='row yyyymmddesa-appended'></div>`);
-    let spinner = $(
-      "<div style='font-size: 3em; color: #4dc1bb; text-align:center'><i class='fa fa-spinner fa-spin'></i></div>"
+    let spinner =
+      "<div style='font-size: 3em; color: #4dc1bb; text-align:center'><i class='fa fa-spinner fa-spin'></i></div>";
+    const targetStyle = "border-top: 3px solid rgba(0,0,0,0.4); padding:30px 0";
+    let target = $(
+      `<div class='row yyyymmddesa-appended' style='${targetStyle}'>${spinner}</div>`
     );
-    target.append(spinner);
-    $(".post-prev-next").append(target);
+
+    $("#comments")
+      .parent()
+      .before(target);
 
     (async (date, root, name, id) => {
       await getRangePosts(date, root, name, id)
