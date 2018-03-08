@@ -81,17 +81,12 @@ async function getRangePosts(date, root, name, id) {
 
   console.log({ index, prev, next });
 
-  if (index == -1) {
-    let errorInfo = { date, thisMonthPosts };
-    console.error("[ERROR] This post doesn't exist in this month!", errorInfo);
-    return { prevPost: null, nextPost: null };
-  }
-
   // prev, nextが今月の記事から取得できない、かつその月にprev, nextがありそうなときだけ再取得
   // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
   let firstDate = date.clone().startOf("month");
   let lastDate = date.clone().endOf("month");
   if (
+    index == -1 ||
     (prev < 0 && !date.isSame(firstDate)) ||
     (next >= thisMonthPosts.length && !date.isSame(lastDate))
   ) {
