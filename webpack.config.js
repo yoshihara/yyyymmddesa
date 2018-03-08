@@ -3,10 +3,8 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    index: './src/js/index.js',
     options: './src/js/options.js',
-    content: './src/js/content.js',
-    background: './src/js/background.js'
+    content: './src/js/content.js'
   },
   output: {
     path: path.resolve(__dirname, 'build'),

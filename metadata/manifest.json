@@ -12,22 +12,11 @@
 
     "options_page": "options.html",
 
-    "background": {
-        "scripts": ["background.bundle.js"],
-        "persistent": false
-    },
-
     "content_scripts": [
     {
       "matches": ["https://*.esa.io/*"],
       "js": ["content.bundle.js"]
     }],
-
-    "browser_action": {
-        "default_icon": "icon19.png",
-        "default_title": "title",
-        "default_popup": "index.html"
-    },
 
     "icons": {
         "16"  : "icon19.png",

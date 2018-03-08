@@ -2,7 +2,7 @@
   "name": "yyyymmddesa",
   "version": "0.1.0",
   "description": "Tiny tools for daily report in esa.io",
-  "main": "index.js",
+  "main": "content.js",
   "private": false,
   "scripts": {
     "package": "npm run build && zip package.zip build/**/*",
