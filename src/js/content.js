@@ -24,10 +24,11 @@ if (match) {
     const date = new moment(yearAndMonth, "YYYY/MM");
 
     let prevPost, nextPost;
+    const spinnerStyle = "font-size: 3em; color: #4dc1bb; text-align:center;";
+    let spinner = `<div style='${spinnerStyle}'><i class='fa fa-spinner fa-spin'></i></div>`;
 
-    let spinner =
-      "<div style='font-size: 3em; color: #4dc1bb; text-align:center'><i class='fa fa-spinner fa-spin'></i></div>";
-    const targetStyle = "border-top: 3px solid rgba(0,0,0,0.4); padding:30px 0";
+    // NOTE: 800px is .post-prev-next DOM' width
+    const targetStyle = "padding: 30px 0; max-width: 800px; width: 800px;";
     let target = $(
       `<div class='row yyyymmddesa-appended' style='${targetStyle}'>${spinner}</div>`
     );
