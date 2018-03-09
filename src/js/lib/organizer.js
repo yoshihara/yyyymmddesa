@@ -1,5 +1,7 @@
 "use strict";
 
+import Range from "./range.js";
+
 export default class Organizer {
   constructor(id) {
     this.id = parseInt(id);
@@ -11,7 +13,11 @@ export default class Organizer {
     })[0];
 
     const index = posts.indexOf(post);
-    return [index - 1, index, index + 1];
+    const [prev, next] = [index - 1, index + 1];
+
+    console.log({ prevIndex: prev, index, nextIndex: next, posts });
+
+    return new Range({ prevIndex: prev, index, nextIndex: next, posts });
   }
 
   flatten(target) {

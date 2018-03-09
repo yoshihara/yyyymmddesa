@@ -9,6 +9,7 @@ export default class Fetcher {
 
   async getRangePosts(date, root, name, id) {
     const organizer = new Organizer(id);
+    let range;
 
     let [prevMonthPosts, thisMonthPosts, nextMonthPosts] = [[], [], []];
     let prev, index, next;
@@ -16,33 +17,36 @@ export default class Fetcher {
     // 今月をキャッシュもしくはAPIで取得
     await this.fetchPosts(date, root, name).then(posts => {
       thisMonthPosts = posts;
-      [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
+      range = organizer.calculateOrders(thisMonthPosts);
     });
 
-    console.log({ index, prev, next });
+    console.log(range);
+    if (range.isValid) {
+      // TODO: あとでrange渡してUI側が良い感じにする
+      return { prevPost: range.prevPost, nextPost: range.nextPost };
+    }
 
     // prev, nextが今月の記事から取得できない、かつその月にprev, nextがありそうなときだけ再取得
     // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
     if (
-      index == -1 ||
-      (prev < 0 && !this.isFirstDate(date)) ||
-      (next >= thisMonthPosts.length && !this.isLastDate(date))
+      (!range.isValidPrevPost && !this.isFirstDate(date)) ||
+      (!range.isValidNextPost && !this.isLastDate(date))
     ) {
       await this.fetchPosts(date, root, name, false).then(posts => {
         thisMonthPosts = posts;
-        [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
+        range = organizer.calculateOrders(thisMonthPosts);
       });
     }
 
     // 前のものがない場合、先月分を取ってくる
-    if (prev < 0) {
+    if (!range.isValidPrevPost) {
       await this.fetchPosts(this.prevMonth(date), root, name).then(posts => {
         prevMonthPosts = posts;
       });
     }
 
     // 次のものがない場合、来月分を取ってくる
-    if (next >= thisMonthPosts.length) {
+    if (!range.isValidNextPost) {
       await this.fetchPosts(this.nextMonth(date), root, name).then(posts => {
         nextMonthPosts = posts;
       });
@@ -56,10 +60,11 @@ export default class Fetcher {
       nextMonthPosts
     ]);
 
-    [prev, index, next] = organizer.calculateOrders(posts);
+    range = organizer.calculateOrders(posts);
 
-    console.log(posts, index);
-    return { prevPost: posts[prev], nextPost: posts[next] };
+    console.log(posts, range);
+    // TODO: あとでrange渡してUI側が良い感じにする
+    return { prevPost: range.prevPost, nextPost: range.nextPost };
   }
 
   prevMonth(date) {
