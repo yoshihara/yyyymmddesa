@@ -13,16 +13,9 @@ const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 
 if (match) {
   const id = match[1];
-  const category = Extractor.category();
-  const rootAndDate = category.match(/^(.+)\/(\d\d\d\d\/\d\d)\/\d\d$/);
+  const { root, date, name } = Extractor.currentPostInfo();
 
-  if (rootAndDate) {
-    const root = rootAndDate[1];
-    const yearAndMonth = rootAndDate[2];
-    const name = Extractor.name();
-
-    const date = new moment(yearAndMonth, "YYYY/MM");
-
+  if (root && date && name) {
     let prevPost, nextPost;
     const spinnerStyle = "font-size: 3em; color: #4dc1bb; text-align:center;";
     let spinner = `<div style='${spinnerStyle}'><i class='fa fa-spinner fa-spin'></i></div>`;
