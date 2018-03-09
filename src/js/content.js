@@ -28,7 +28,8 @@ if (match) {
     let spinner = `<div style='${spinnerStyle}'><i class='fa fa-spinner fa-spin'></i></div>`;
 
     // NOTE: 800px is .post-prev-next DOM' width
-    const targetStyle = "padding: 30px 0; max-width: 800px; width: 800px;";
+    const targetStyle =
+      "padding: 30px 0 20px 0; max-width: 800px; width: 800px; border-top: 1px solid rgba(0,0,0,0.1); font-size: 90%;";
     let target = $(
       `<div class='row yyyymmddesa-appended' style='${targetStyle}'>${spinner}</div>`
     );
@@ -53,16 +54,23 @@ if (match) {
 
       if (prevPost) {
         target.append(
-          `<a href='${prevPost.url}' style='float:left;'>${
+          `<div style='float:left;'><a href='${prevPost.url}'>${
             prevPost.full_name
-          }</a>`
+          }</a></div>`
         );
       }
       if (nextPost) {
         target.append(
-          `<a href='${nextPost.url}' style='float:right;'>${
+          `<div style='float:right;'><a href='${nextPost.url}'>${
             nextPost.full_name
-          }</a>`
+          }</a></div>`
+        );
+      }
+      if (prevPost || nextPost) {
+        const description =
+          "<i class='fa fa-calendar'></i> This links created by yyyymmddesa.";
+        target.append(
+          `<div style='clear: both; padding-top: 20px; text-align: right; color: rgba(0,0,0,.2);'>${description}</div>`
         );
       }
     })(date, root, name, id);
