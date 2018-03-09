@@ -20,3 +20,10 @@
 #yyyymmddesa-appended > #yyyymmddesa-next-link {
     float: right;
 }
+
+#yyyymmddesa-appended > #yyyymmddesa-description {
+    clear: both;
+    padding-top: 20px;
+    text-align: right;
+    color: rgba(0,0,0,.2);
+}

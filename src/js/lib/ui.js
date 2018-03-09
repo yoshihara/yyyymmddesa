@@ -43,7 +43,7 @@ export default class UI {
     if (prevPost || nextPost) {
       const description =
         "<i class='fa fa-calendar'></i> This links created by yyyymmddesa.";
-      const descriptionDom = `<div style='clear: both; padding-top: 20px; text-align: right; color: rgba(0,0,0,.2);'>${description}</div>`;
+      const descriptionDom = `<div id='yyyymmddesa-description'>${description}</div>`;
       this.dom.append(descriptionDom);
     }
   }
