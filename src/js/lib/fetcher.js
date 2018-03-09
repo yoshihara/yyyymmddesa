@@ -1,6 +1,7 @@
 import Store from "./store.js";
 import Esa from "./esa.js";
 import Organizer from "./organizer.js";
+import Duration from "./duration.js";
 
 export default class Fetcher {
   constructor() {
@@ -9,6 +10,8 @@ export default class Fetcher {
 
   async fetchRange(date, root, name, id) {
     const organizer = new Organizer(id);
+    const duration = new Duration(date);
+
     let range;
 
     let [prevMonthPosts, thisMonthPosts, nextMonthPosts] = [[], [], []];
@@ -27,8 +30,8 @@ export default class Fetcher {
     // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
     // NOTE: キャッシュがない状態で最新の記事を取ってきた場合に2回APIを叩いてしまう
     if (
-      (!range.isValidPrevPost && !this.isFirstDate(date)) ||
-      (!range.isValidNextPost && !this.isLastDate(date))
+      (!range.isValidPrevPost && !duration.isFirstDate) ||
+      (!range.isValidNextPost && !duration.isLastDate)
     ) {
       await this.fetchPosts(date, root, name, false).then(posts => {
         thisMonthPosts = posts;
@@ -38,14 +41,14 @@ export default class Fetcher {
 
     // 前のものがない場合、先月分を取ってくる
     if (!range.isValidPrevPost) {
-      await this.fetchPosts(this.prevMonth(date), root, name).then(posts => {
+      await this.fetchPosts(duration.prevMonth, root, name).then(posts => {
         prevMonthPosts = posts;
       });
     }
 
     // 次のものがない場合、来月分を取ってくる
     if (!range.isValidNextPost) {
-      await this.fetchPosts(this.nextMonth(date), root, name).then(posts => {
+      await this.fetchPosts(duration.nextMonth, root, name).then(posts => {
         nextMonthPosts = posts;
       });
     }
@@ -62,30 +65,6 @@ export default class Fetcher {
 
     console.log(posts, range);
     return range;
-  }
-
-  prevMonth(date) {
-    return date
-      .clone()
-      .subtract(1, "month")
-      .startOf("month");
-  }
-
-  nextMonth(date) {
-    return date
-      .clone()
-      .add(1, "month")
-      .startOf("month");
-  }
-
-  isFirstDate(date) {
-    let firstDate = date.clone().startOf("month");
-    return date.isSame(firstDate, "day");
-  }
-
-  isLastDate(date) {
-    let lastDate = date.clone().endOf("month");
-    return date.isSame(lastDate, "day");
   }
 
   async fetchPosts(date, root, name, useCache = true) {
