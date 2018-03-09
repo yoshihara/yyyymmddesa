@@ -12,3 +12,11 @@
     font-size: 3em;
     color: #4dc1bb;
 }
+
+#yyyymmddesa-appended > #yyyymmddesa-prev-link {
+    float: left;
+}
+
+#yyyymmddesa-appended > #yyyymmddesa-next-link {
+    float: right;
+}

@@ -26,7 +26,7 @@ export default class UI {
 
     if (prevPost) {
       this.dom.append(
-        `<div style='float:left;'><a href='${prevPost.url}'>${
+        `<div id='yyyymmddesa-prev-link'><a href='${prevPost.url}'>${
           prevPost.full_name
         }</a></div>`
       );
@@ -34,7 +34,7 @@ export default class UI {
 
     if (nextPost) {
       this.dom.append(
-        `<div style='float:right;'><a href='${nextPost.url}'>${
+        `<div id='yyyymmddesa-next-link'><a href='${nextPost.url}'>${
           nextPost.full_name
         }</a></div>`
       );
