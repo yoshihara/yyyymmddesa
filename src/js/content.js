@@ -43,6 +43,7 @@ async function getRangePosts(date, root, name, id) {
   const esa = new Esa(token);
   const fetcher = new Fetcher(esa);
 
+  // 今月をキャッシュもしくはAPIで取得
   let thisMonthPosts;
   await fetcher.fetchPosts(date, root, name).then(posts => {
     thisMonthPosts = posts;
@@ -55,13 +56,10 @@ async function getRangePosts(date, root, name, id) {
 
   // prev, nextが今月の記事から取得できない、かつその月にprev, nextがありそうなときだけ再取得
   // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
-  let firstDate = date.clone().startOf("month");
-  let lastDate = date.clone().endOf("month");
-
   if (
     index == -1 ||
-    (prev < 0 && !date.isSame(firstDate, "day")) ||
-    (next >= thisMonthPosts.length && !date.isSame(lastDate, "day"))
+    (prev < 0 && !isFirstDate(date)) ||
+    (next >= thisMonthPosts.length && !isLastDate(date))
   ) {
     await fetcher.fetchPosts(date, root, name, false).then(posts => {
       thisMonthPosts = posts;
@@ -69,6 +67,7 @@ async function getRangePosts(date, root, name, id) {
     });
   }
 
+  // 前のものがない場合、先月分を取ってくる
   let prevMonthPosts = [];
   if (prev < 0) {
     let prevMonth = date
@@ -80,6 +79,7 @@ async function getRangePosts(date, root, name, id) {
     });
   }
 
+  // 次のものがない場合、来月分を取ってくる
   let nextMonthPosts = [];
   if (next >= thisMonthPosts.length) {
     let nextMonth = date
@@ -124,4 +124,14 @@ function sortPosts(res) {
     else if (fullName1 < fullName2) return -1;
     else return 0;
   });
+}
+
+function isFirstDate(date) {
+  let firstDate = date.clone().startOf("month");
+  return date.isSame(firstDate, "day");
+}
+
+function isLastDate(date) {
+  let lastDate = date.clone().endOf("month");
+  return date.isSame(lastDate, "day");
 }
