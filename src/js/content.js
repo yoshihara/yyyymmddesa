@@ -78,11 +78,7 @@ async function getRangePosts(date, root, name, id) {
   // 次のものがない場合、来月分を取ってくる
   let nextMonthPosts = [];
   if (next >= thisMonthPosts.length) {
-    let nextMonth = date
-      .clone()
-      .add(1, "month")
-      .startOf("month");
-    await fetcher.fetchPosts(nextMonth, root, name).then(posts => {
+    await fetcher.fetchPosts(nextMonth(date), root, name).then(posts => {
       nextMonthPosts = posts;
     });
   }
@@ -126,6 +122,13 @@ function prevMonth(date) {
   return date
     .clone()
     .subtract(1, "month")
+    .startOf("month");
+}
+
+function nextMonth(date) {
+  return date
+    .clone()
+    .add(1, "month")
     .startOf("month");
 }
 
