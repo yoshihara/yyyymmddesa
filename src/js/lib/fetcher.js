@@ -68,17 +68,16 @@ export default class Fetcher {
       cache = await Store.getCache({ date, root, name });
     }
 
-    if (cache !== null) {
-      return cache;
-    } else {
-      let q = this.query(root, date, name);
-      let posts = JSON.parse(await this.esa.getPosts(q)).posts;
+    if (cache !== null) return cache;
 
-      await Store.setCache({ date, root, name }, posts).catch(error => {
-        console.error(chrome.runtime.lastError, error);
-      });
-      return posts;
-    }
+    let q = this.query(root, date, name);
+    let posts = JSON.parse(await this.esa.getPosts(q)).posts;
+
+    await Store.setCache({ date, root, name }, posts).catch(error => {
+      console.error(chrome.runtime.lastError, error);
+    });
+
+    return posts;
   }
 
   query(root, date, name) {
