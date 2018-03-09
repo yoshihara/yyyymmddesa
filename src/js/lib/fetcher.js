@@ -21,13 +21,11 @@ export default class Fetcher {
     });
 
     console.log(range);
-    if (range.isValid) {
-      // TODO: あとでrange渡してUI側が良い感じにする
-      return { prevPost: range.prevPost, nextPost: range.nextPost };
-    }
+    if (range.isValid) return range;
 
     // prev, nextが今月の記事から取得できない、かつその月にprev, nextがありそうなときだけ再取得
     // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
+    // NOTE: キャッシュがない状態で最新の記事を取ってきた場合に2回APIを叩いてしまう
     if (
       (!range.isValidPrevPost && !this.isFirstDate(date)) ||
       (!range.isValidNextPost && !this.isLastDate(date))
@@ -63,8 +61,7 @@ export default class Fetcher {
     range = organizer.calculateOrders(posts);
 
     console.log(posts, range);
-    // TODO: あとでrange渡してUI側が良い感じにする
-    return { prevPost: range.prevPost, nextPost: range.nextPost };
+    return range;
   }
 
   prevMonth(date) {

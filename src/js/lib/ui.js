@@ -24,9 +24,10 @@ export default class UI {
     this.dom = dom;
   }
 
-  showLinks(prevPost, nextPost) {
+  showLinks(range) {
     if (this.dom == null) return;
 
+    let { prevPost, nextPost } = range;
     this.dom.empty();
 
     if (prevPost) {

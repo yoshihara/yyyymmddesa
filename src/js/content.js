@@ -18,21 +18,16 @@ if (match) {
     const fetcher = new Fetcher();
     ui.showLoading();
 
-    let prevPost, nextPost;
-
     (async (date, root, name, id) => {
       await fetcher.getRangePosts(date, root, name, id)
-        .then(posts => {
-          prevPost = posts.prevPost;
-          nextPost = posts.nextPost;
+        .then(range => {
+          ui.showLinks(range);
         })
         .catch(err => {
           console.log("Error occured in fetch:");
           console.error(err);
           return;
         });
-
-      ui.showLinks(prevPost, nextPost);
     })(date, root, name, id);
   }
 }
