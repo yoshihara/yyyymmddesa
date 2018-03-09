@@ -27,9 +27,7 @@ export default class Extractor {
       .find(".post-title__name")
       .text();
     // NOTE: コロン、スペース（半角・全角）、括弧（半角・全角）を名前とタイトルの切れ目とみなす
-    const nameAndTitle = postTitle.split(/[: 　（(]/).filter(a => {
-      return a != "";
-    });
+    const nameAndTitle = postTitle.split(/[: 　（(]/);
     return nameAndTitle[0];
   }
 }
