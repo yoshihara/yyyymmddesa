@@ -2,7 +2,7 @@
 
 export default class Organizer {
   constructor(id) {
-    this.id = id;
+    this.id = parseInt(id);
   }
 
   calculateOrders(posts) {
