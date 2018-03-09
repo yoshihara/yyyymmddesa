@@ -5,7 +5,7 @@
   "main": "content.js",
   "private": false,
   "scripts": {
-    "package": "npm run build && zip package.zip build/**/*",
+    "package": "yarn build && zip package.zip build/*",
     "clean": "rm -rf build/ && mkdir -p build",
     "build:js": "webpack --config webpack.config.js",
     "build:metadata": "rm -rf build/*.png build/manifest.json && cp -a metadata/* build/",
