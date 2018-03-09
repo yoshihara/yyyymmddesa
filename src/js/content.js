@@ -6,6 +6,7 @@ import Extractor from "./lib/extractor.js";
 import Esa from "./lib/esa.js";
 import Store from "./lib/store.js";
 import Fetcher from "./lib/fetcher.js";
+import Organizer from "./lib/organizer.js";
 import UI from "./lib/ui.js";
 
 const path = window.location.pathname;
@@ -42,6 +43,7 @@ async function getRangePosts(date, root, name, id) {
   const token = await Store.getToken();
   const esa = new Esa(token);
   const fetcher = new Fetcher(esa);
+  const organizer = new Organizer(id);
 
   // 今月をキャッシュもしくはAPIで取得
   let thisMonthPosts;
@@ -50,7 +52,7 @@ async function getRangePosts(date, root, name, id) {
   });
 
   let prev, index, next;
-  [prev, index, next] = calculateOrders(thisMonthPosts, id);
+  [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
 
   console.log({ index, prev, next });
 
@@ -63,7 +65,7 @@ async function getRangePosts(date, root, name, id) {
   ) {
     await fetcher.fetchPosts(date, root, name, false).then(posts => {
       thisMonthPosts = posts;
-      [prev, index, next] = calculateOrders(thisMonthPosts, id);
+      [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
     });
   }
 
@@ -92,30 +94,10 @@ async function getRangePosts(date, root, name, id) {
     thisMonthPosts,
     nextMonthPosts
   ]).reduce(flatten);
-  [prev, index, next] = calculateOrders(posts, id);
+  [prev, index, next] = organizer.calculateOrders(posts);
 
   console.log(posts, index);
   return { prevPost: posts[prev], nextPost: posts[next] };
-}
-
-function calculateOrders(posts, id) {
-  let post = sortPosts(posts).filter(post => {
-    if (post.number == id) return post;
-  })[0];
-
-  const index = posts.indexOf(post);
-  return [index - 1, index, index + 1];
-}
-
-function sortPosts(res) {
-  return res.sort((post1, post2) => {
-    let fullName1 = post1.full_name;
-    let fullName2 = post2.full_name;
-
-    if (fullName1 > fullName2) return 1;
-    else if (fullName1 < fullName2) return -1;
-    else return 0;
-  });
 }
 
 function prevMonth(date) {
