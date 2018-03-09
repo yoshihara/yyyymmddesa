@@ -11,11 +11,8 @@ export default class UI {
 
   // TODO styleをstyle DOM作って入れてクラスで見れるようにする
   showLoading() {
-    const spinnerStyle = "font-size: 3em; color: #4dc1bb; text-align:center;";
-    let spinner = `<div style='${spinnerStyle}'><i class='fa fa-spinner fa-spin'></i></div>`;
-    let dom = $(
-      `<div class='row yyyymmddesa-appended'>${spinner}</div>`
-    );
+    let spinner = `<div class='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>`;
+    let dom = $(`<div class='row yyyymmddesa-appended'>${spinner}</div>`);
 
     this.headDom.before(dom);
     this.dom = dom;
