@@ -44,8 +44,8 @@ async function getRangePosts(date, root, name, id) {
   const fetcher = new Fetcher(esa);
 
   let thisMonthPosts;
-  await fetcher.fetchPosts(date, root, name).then(post => {
-    thisMonthPosts = post;
+  await fetcher.fetchPosts(date, root, name).then(posts => {
+    thisMonthPosts = posts;
   });
 
   let index = fetchIndex(thisMonthPosts, id);
@@ -78,8 +78,8 @@ async function getRangePosts(date, root, name, id) {
       .clone()
       .subtract(1, "month")
       .startOf("month");
-    await fetcher.fetchPosts(prevMonth, root, name).then(post => {
-      prevMonthPosts = post;
+    await fetcher.fetchPosts(prevMonth, root, name).then(posts => {
+      prevMonthPosts = posts;
     });
   }
 
@@ -89,8 +89,8 @@ async function getRangePosts(date, root, name, id) {
       .clone()
       .add(1, "month")
       .startOf("month");
-    await fetcher.fetchPosts(nextMonth, root, name).then(post => {
-      nextMonthPosts = post;
+    await fetcher.fetchPosts(nextMonth, root, name).then(posts => {
+      nextMonthPosts = posts;
     });
   }
 
