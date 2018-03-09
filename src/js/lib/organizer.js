@@ -20,12 +20,6 @@ export default class Organizer {
     return new Range({ prevIndex: prev, index, nextIndex: next, posts });
   }
 
-  flatten(target) {
-    return target.reduce((accumulator, currentValue) => {
-      return accumulator.concat(currentValue);
-    });
-  }
-
   sortPosts(res) {
     return res.sort((post1, post2) => {
       let fullName1 = post1.full_name;

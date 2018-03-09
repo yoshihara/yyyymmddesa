@@ -55,15 +55,15 @@ export default class Fetcher {
 
     // 取得した記事を繋いだ状態でindexを取り直す
     console.log({ prevMonthPosts, thisMonthPosts, nextMonthPosts });
-    let posts = organizer.flatten([
-      prevMonthPosts,
-      thisMonthPosts,
-      nextMonthPosts
-    ]);
 
-    range = organizer.calculateOrders(posts);
+    let posts = [prevMonthPosts, thisMonthPosts, nextMonthPosts];
+    let durationPosts = posts.reduce((accumulator, currentValue) => {
+      return accumulator.concat(currentValue);
+    });
 
-    console.log(posts, range);
+    range = organizer.calculateOrders(durationPosts);
+
+    console.log(range);
     return range;
   }
 
