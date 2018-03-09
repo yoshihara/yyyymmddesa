@@ -1,10 +1,12 @@
 import Store from "./store.js";
+import Esa from "./esa.js";
 import Organizer from "./organizer.js";
 
 export default class Fetcher {
-  constructor(esa) {
-    this.esa = esa;
+  constructor() {
+    Store.getToken().then(token => (this.esa = new Esa(token)));
   }
+
   async getRangePosts(date, root, name, id) {
     const organizer = new Organizer(id);
 
