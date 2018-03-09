@@ -45,13 +45,14 @@ async function getRangePosts(date, root, name, id) {
   const fetcher = new Fetcher(esa);
   const organizer = new Organizer(id);
 
+  let [prevMonthPosts, thisMonthPosts, nextMonthPosts] = [[], [], []];
+  let prev, index, next;
+
   // 今月をキャッシュもしくはAPIで取得
-  let thisMonthPosts;
   await fetcher.fetchPosts(date, root, name).then(posts => {
     thisMonthPosts = posts;
   });
 
-  let prev, index, next;
   [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
 
   console.log({ index, prev, next });
@@ -70,7 +71,6 @@ async function getRangePosts(date, root, name, id) {
   }
 
   // 前のものがない場合、先月分を取ってくる
-  let prevMonthPosts = [];
   if (prev < 0) {
     await fetcher.fetchPosts(prevMonth(date), root, name).then(posts => {
       prevMonthPosts = posts;
@@ -78,7 +78,6 @@ async function getRangePosts(date, root, name, id) {
   }
 
   // 次のものがない場合、来月分を取ってくる
-  let nextMonthPosts = [];
   if (next >= thisMonthPosts.length) {
     await fetcher.fetchPosts(nextMonth(date), root, name).then(posts => {
       nextMonthPosts = posts;
