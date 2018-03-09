@@ -16,7 +16,8 @@
     "watch:metadata": "watchy -w metadata -- npm run build:metadata",
     "watch:html": "watchy -w src/pug -- npm run build:html",
     "watch:css": "watchy -w src/sass -- npm run build:css",
-    "watch": "npm-run-all clean -p watch:*"
+    "watch": "npm-run-all clean -p watch:*",
+    "fmt": "prettier --write src/js/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "expose-loader": "^0.7.3",
     "node-sass": "^4.5.3",
     "npm-run-all": "^4.0.2",
+    "prettier": "^1.11.1",
     "pug-cli": "^1.0.0-alpha6",
     "watchy": "^0.7.0",
     "webpack": "^3.5.4"
