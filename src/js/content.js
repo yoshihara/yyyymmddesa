@@ -3,7 +3,6 @@
 import moment from "moment";
 
 import Extractor from "./lib/extractor.js";
-import Esa from "./lib/esa.js";
 import Fetcher from "./lib/fetcher.js";
 import UI from "./lib/ui.js";
 
@@ -16,8 +15,7 @@ if (match) {
   const { root, date, name } = Extractor.currentPostInfo();
 
   if (root && date && name) {
-    const esa = new Esa;
-    const fetcher = new Fetcher(esa);
+    const fetcher = new Fetcher();
     ui.showLoading();
 
     let prevPost, nextPost;
