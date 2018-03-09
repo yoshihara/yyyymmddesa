@@ -89,11 +89,11 @@ async function getRangePosts(date, root, name, id) {
   const flatten = (accumulator, currentValue) =>
     accumulator.concat(currentValue);
   console.log({ prevMonthPosts, thisMonthPosts, nextMonthPosts });
-  let posts = Object.values([
+  let posts = [
     prevMonthPosts,
     thisMonthPosts,
     nextMonthPosts
-  ]).reduce(flatten);
+  ].reduce(flatten);
   [prev, index, next] = organizer.calculateOrders(posts);
 
   console.log(posts, index);
