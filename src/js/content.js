@@ -1,35 +1,25 @@
 "use strict";
 
-import $ from "jquery";
 import moment from "moment";
 
 import Extractor from "./lib/extractor.js";
 import Esa from "./lib/esa.js";
 import Store from "./lib/store.js";
 import Fetcher from "./lib/fetcher.js";
+import UI from "./lib/ui.js";
 
 const path = window.location.pathname;
 const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 
 if (match) {
+  const ui = new UI();
   const id = match[1];
   const { root, date, name } = Extractor.currentPostInfo();
 
   if (root && date && name) {
+    ui.showLoading();
+
     let prevPost, nextPost;
-    const spinnerStyle = "font-size: 3em; color: #4dc1bb; text-align:center;";
-    let spinner = `<div style='${spinnerStyle}'><i class='fa fa-spinner fa-spin'></i></div>`;
-
-    // NOTE: 800px is .post-prev-next DOM' width
-    const targetStyle =
-      "padding: 30px 0 20px 0; max-width: 800px; width: 800px; border-top: 1px solid rgba(0,0,0,0.1); font-size: 90%;";
-    let target = $(
-      `<div class='row yyyymmddesa-appended' style='${targetStyle}'>${spinner}</div>`
-    );
-
-    $("#comments")
-      .parent()
-      .before(target);
 
     (async (date, root, name, id) => {
       await getRangePosts(date, root, name, id)
@@ -43,29 +33,7 @@ if (match) {
           return;
         });
 
-      target.empty();
-
-      if (prevPost) {
-        target.append(
-          `<div style='float:left;'><a href='${prevPost.url}'>${
-            prevPost.full_name
-          }</a></div>`
-        );
-      }
-      if (nextPost) {
-        target.append(
-          `<div style='float:right;'><a href='${nextPost.url}'>${
-            nextPost.full_name
-          }</a></div>`
-        );
-      }
-      if (prevPost || nextPost) {
-        const description =
-          "<i class='fa fa-calendar'></i> This links created by yyyymmddesa.";
-        target.append(
-          `<div style='clear: both; padding-top: 20px; text-align: right; color: rgba(0,0,0,.2);'>${description}</div>`
-        );
-      }
+      ui.showLinks(prevPost, nextPost);
     })(date, root, name, id);
   }
 }
