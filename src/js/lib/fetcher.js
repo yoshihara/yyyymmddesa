@@ -58,9 +58,7 @@ export default class Fetcher {
       return accumulator.concat(currentValue);
     });
 
-    range = organizer.calculateOrders(durationPosts);
-
-    return range;
+    return organizer.calculateOrders(durationPosts);
   }
 
   async fetchPosts(date, root, name, useCache = true) {
