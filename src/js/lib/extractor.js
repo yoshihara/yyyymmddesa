@@ -7,17 +7,15 @@ export default class Extractor {
   static currentPostInfo() {
     const match = this.category().match(/^(.+)\/(\d\d\d\d\/\d\d\/\d\d)$/);
 
-    if (match) {
-      const root = match[1];
-      const yearAndMonth = match[2];
-      const name = this.name();
+    if (!match) return {};
 
-      const date = new moment(yearAndMonth, "YYYY/MM/DD");
+    const root = match[1];
+    const yearAndMonth = match[2];
+    const name = this.name();
 
-      return { root, date, name };
-    } else {
-      return {};
-    }
+    const date = new moment(yearAndMonth, "YYYY/MM/DD");
+
+    return { root, date, name };
   }
 
   static category() {
