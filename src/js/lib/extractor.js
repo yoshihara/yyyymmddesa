@@ -5,14 +5,14 @@ import moment from "moment";
 
 export default class Extractor {
   static currentPostInfo() {
-    const match = this.category().match(/^(.+)\/(\d\d\d\d\/\d\d)\/\d\d$/);
+    const match = this.category().match(/^(.+)\/(\d\d\d\d\/\d\d\/\d\d)$/);
 
     if (match) {
       const root = match[1];
       const yearAndMonth = match[2];
       const name = this.name();
 
-      const date = new moment(yearAndMonth, "YYYY/MM");
+      const date = new moment(yearAndMonth, "YYYY/MM/DD");
 
       return { root, date, name };
     } else {
