@@ -86,14 +86,13 @@ async function getRangePosts(date, root, name, id) {
   }
 
   // 取得した記事を繋いだ状態でindexを取り直す
-  const flatten = (accumulator, currentValue) =>
-    accumulator.concat(currentValue);
   console.log({ prevMonthPosts, thisMonthPosts, nextMonthPosts });
-  let posts = [
+  let posts = organizer.flatten([
     prevMonthPosts,
     thisMonthPosts,
     nextMonthPosts
-  ].reduce(flatten);
+  ]);
+
   [prev, index, next] = organizer.calculateOrders(posts);
 
   console.log(posts, index);
