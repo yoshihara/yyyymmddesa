@@ -41,7 +41,9 @@
     "prettier": "^1.11.1",
     "pug-cli": "^1.0.0-alpha6",
     "watchy": "^0.7.0",
-    "webpack": "^3.5.4"
+    "webpack": "^3.5.4",
+    "css-loader": "^0.28.10",
+    "style-loader": "^0.20.3"
   },
   "dependencies": {
     "jquery": "^3.2.1",

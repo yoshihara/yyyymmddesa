@@ -11,13 +11,10 @@ export default class UI {
 
   // TODO styleをstyle DOM作って入れてクラスで見れるようにする
   showLoading() {
-    // NOTE: 800px is .post-prev-next DOM' width
     const spinnerStyle = "font-size: 3em; color: #4dc1bb; text-align:center;";
     let spinner = `<div style='${spinnerStyle}'><i class='fa fa-spinner fa-spin'></i></div>`;
-    const domStyle =
-      "padding: 30px 0 20px 0; max-width: 800px; width: 800px; border-top: 1px solid rgba(0,0,0,0.1); font-size: 90%;";
     let dom = $(
-      `<div class='row yyyymmddesa-appended' style='${domStyle}'>${spinner}</div>`
+      `<div class='row yyyymmddesa-appended'>${spinner}</div>`
     );
 
     this.headDom.before(dom);

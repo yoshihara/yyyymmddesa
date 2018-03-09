@@ -1,5 +1,6 @@
 "use strict";
 
+import style from "./content.css";
 import moment from "moment";
 
 import Extractor from "./lib/extractor.js";
