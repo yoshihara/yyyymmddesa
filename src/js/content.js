@@ -48,9 +48,8 @@ async function getRangePosts(date, root, name, id) {
     thisMonthPosts = posts;
   });
 
-  let index = fetchIndex(thisMonthPosts, id);
-  let prev = index - 1;
-  let next = index + 1;
+  let prev, index, next;
+  [prev, index, next] = calculateOrders(thisMonthPosts, id);
 
   console.log({ index, prev, next });
 
@@ -66,9 +65,7 @@ async function getRangePosts(date, root, name, id) {
   ) {
     await fetcher.fetchPosts(date, root, name, false).then(posts => {
       thisMonthPosts = posts;
-      index = fetchIndex(thisMonthPosts, id);
-      prev = index - 1;
-      next = index + 1;
+      [prev, index, next] = calculateOrders(thisMonthPosts, id);
     });
   }
 
@@ -103,20 +100,19 @@ async function getRangePosts(date, root, name, id) {
     thisMonthPosts,
     nextMonthPosts
   ]).reduce(flatten);
-  index = fetchIndex(posts, id);
-  prev = index - 1;
-  next = index + 1;
+  [prev, index, next] = calculateOrders(posts, id);
 
   console.log(posts, index);
   return { prevPost: posts[prev], nextPost: posts[next] };
 }
 
-function fetchIndex(posts, id) {
+function calculateOrders(posts, id) {
   let post = sortPosts(posts).filter(post => {
     if (post.number == id) return post;
   })[0];
 
-  return posts.indexOf(post);
+  const index = posts.indexOf(post);
+  return [index - 1, index, index + 1];
 }
 
 function sortPosts(res) {
