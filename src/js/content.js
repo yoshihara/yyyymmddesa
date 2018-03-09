@@ -39,7 +39,6 @@ if (match) {
 }
 
 async function getRangePosts(date, root, name, id) {
-  let q;
   const token = await Store.getToken();
   const esa = new Esa(token);
   const fetcher = new Fetcher(esa);
@@ -65,16 +64,12 @@ async function getRangePosts(date, root, name, id) {
     (prev < 0 && !date.isSame(firstDate, "day")) ||
     (next >= thisMonthPosts.length && !date.isSame(lastDate, "day"))
   ) {
-    q = fetcher.query(root, date, name);
-    // TODO: ここだけgetPosts生なのでfetcherに何かしらAPI追加する
-    thisMonthPosts = JSON.parse(await esa.getPosts(q)).posts;
-    Store.setCache({ date, root, name }, thisMonthPosts).catch(error => {
-      console.error(chrome.runtime.lastError, error);
+    await fetcher.fetchPosts(date, root, name, false).then(posts => {
+      thisMonthPosts = posts;
+      index = fetchIndex(thisMonthPosts, id);
+      prev = index - 1;
+      next = index + 1;
     });
-
-    index = fetchIndex(thisMonthPosts, id);
-    prev = index - 1;
-    next = index + 1;
   }
 
   let prevMonthPosts = [];

@@ -5,20 +5,24 @@ export default class Fetcher {
     this.esa = esa;
   }
 
-  async fetchPosts(date, root, name) {
+  async fetchPosts(date, root, name, useCache = true) {
     console.log({ fetch: [date, root, name] });
-    let cache = await Store.getCache({ date, root, name });
-    console.log({ cache });
+    let cache = null;
+
+    if (useCache) {
+      cache = await Store.getCache({ date, root, name });
+      console.log({ cache });
+    }
+
     if (cache !== null) {
       console.log({ CacheHit: { date, root, name } });
       return cache;
     } else {
-      let q;
-      let posts;
+      console.log("no cache hit.");
+      let q = this.query(root, date, name);
+      let posts = JSON.parse(await this.esa.getPosts(q)).posts;
 
-      q = this.query(root, date, name);
-      posts = JSON.parse(await this.esa.getPosts(q)).posts;
-      Store.setCache({ date, root, name }, posts).catch(error => {
+      await Store.setCache({ date, root, name }, posts).catch(error => {
         console.error(chrome.runtime.lastError, error);
       });
       return posts;
