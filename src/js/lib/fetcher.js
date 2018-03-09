@@ -23,7 +23,6 @@ export default class Fetcher {
       range = organizer.calculateOrders(thisMonthPosts);
     });
 
-    console.log(range);
     if (range.isValid) return range;
 
     // prev, nextが今月の記事から取得できない、かつその月にprev, nextがありそうなときだけ再取得
@@ -54,8 +53,6 @@ export default class Fetcher {
     }
 
     // 取得した記事を繋いだ状態でindexを取り直す
-    console.log({ prevMonthPosts, thisMonthPosts, nextMonthPosts });
-
     let posts = [prevMonthPosts, thisMonthPosts, nextMonthPosts];
     let durationPosts = posts.reduce((accumulator, currentValue) => {
       return accumulator.concat(currentValue);
@@ -63,24 +60,19 @@ export default class Fetcher {
 
     range = organizer.calculateOrders(durationPosts);
 
-    console.log(range);
     return range;
   }
 
   async fetchPosts(date, root, name, useCache = true) {
-    console.log({ fetch: [date, root, name] });
     let cache = null;
 
     if (useCache) {
       cache = await Store.getCache({ date, root, name });
-      console.log({ cache });
     }
 
     if (cache !== null) {
-      console.log({ CacheHit: { date, root, name } });
       return cache;
     } else {
-      console.log("no cache hit.");
       let q = this.query(root, date, name);
       let posts = JSON.parse(await this.esa.getPosts(q)).posts;
 

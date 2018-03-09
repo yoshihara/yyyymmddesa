@@ -15,8 +15,6 @@ export default class Organizer {
     const index = posts.indexOf(post);
     const [prev, next] = [index - 1, index + 1];
 
-    console.log({ prevIndex: prev, index, nextIndex: next, posts });
-
     return new Range({ prevIndex: prev, index, nextIndex: next, posts });
   }
 

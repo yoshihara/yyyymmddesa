@@ -11,7 +11,6 @@ export default class Store {
 
   static getCache(obj) {
     const key = this.key(obj);
-    console.log("get cache", key);
     let cache = {};
     cache[key] = null;
 
@@ -28,7 +27,6 @@ export default class Store {
       let { number, full_name, url } = post;
       return { number, full_name, url };
     });
-    console.log("set cache", key, cache);
     let defaultCache = {};
     defaultCache[key] = JSON.stringify(cache);
 
