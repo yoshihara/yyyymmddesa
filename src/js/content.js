@@ -19,7 +19,7 @@ if (match) {
     ui.showLoading();
 
     (async (date, root, name, id) => {
-      await fetcher.getRangePosts(date, root, name, id)
+      await fetcher.fetchRange(date, root, name, id)
         .then(range => {
           ui.showLinks(range);
         })

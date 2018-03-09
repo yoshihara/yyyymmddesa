@@ -7,7 +7,7 @@ export default class Fetcher {
     Store.getToken().then(token => (this.esa = new Esa(token)));
   }
 
-  async getRangePosts(date, root, name, id) {
+  async fetchRange(date, root, name, id) {
     const organizer = new Organizer(id);
     let range;
 
