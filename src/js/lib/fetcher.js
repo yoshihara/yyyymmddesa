@@ -16,9 +16,8 @@ export default class Fetcher {
     // 今月をキャッシュもしくはAPIで取得
     await this.fetchPosts(date, root, name).then(posts => {
       thisMonthPosts = posts;
+      [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
     });
-
-    [prev, index, next] = organizer.calculateOrders(thisMonthPosts);
 
     console.log({ index, prev, next });
 
