@@ -70,11 +70,7 @@ async function getRangePosts(date, root, name, id) {
   // 前のものがない場合、先月分を取ってくる
   let prevMonthPosts = [];
   if (prev < 0) {
-    let prevMonth = date
-      .clone()
-      .subtract(1, "month")
-      .startOf("month");
-    await fetcher.fetchPosts(prevMonth, root, name).then(posts => {
+    await fetcher.fetchPosts(prevMonth(date), root, name).then(posts => {
       prevMonthPosts = posts;
     });
   }
@@ -124,6 +120,13 @@ function sortPosts(res) {
     else if (fullName1 < fullName2) return -1;
     else return 0;
   });
+}
+
+function prevMonth(date) {
+  return date
+    .clone()
+    .subtract(1, "month")
+    .startOf("month");
 }
 
 function isFirstDate(date) {
