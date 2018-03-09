@@ -1,11 +1,12 @@
 "use strict";
 
+import Store from "./store.js";
 import https from "https";
 import querystring from "querystring";
 
 export default class Esa {
   constructor(token) {
-    this.token = token;
+    Store.getToken().then(token => (this.token = token));
   }
 
   getPosts(q) {
