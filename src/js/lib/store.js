@@ -1,6 +1,14 @@
 "use strict";
 
 export default class Store {
+  static getDebugflag() {
+    return new Promise((resolve, _reject) => {
+      chrome.storage.local.get({ isDebug: false }, function(flag) {
+        resolve(flag.isDebug);
+      });
+    });
+  }
+
   static getToken() {
     return new Promise((resolve, _reject) => {
       chrome.storage.local.get({ token: null }, function(config) {
