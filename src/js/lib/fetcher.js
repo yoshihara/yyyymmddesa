@@ -21,6 +21,7 @@ export default class Fetcher {
       range = organizer.calculateOrders(thisMonthPosts);
     });
 
+    if (!thisMonthPosts.length) return {};
     if (range.isValid) return range;
 
     // rangeが今月の記事だけではinvalidにならない、かつその月に本来ならrangeがとれそう＝月初もしくは月末でもないときだけ再取得
