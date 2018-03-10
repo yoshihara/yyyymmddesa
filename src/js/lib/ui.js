@@ -4,7 +4,6 @@ import $ from "jquery";
 
 export default class UI {
   constructor() {
-    this.displayedTarget = false;
     this.headDom = $("#comments").parent();
     this.dom = null;
   }
