@@ -77,7 +77,7 @@ export default class Fetcher {
 
   query(root, date, name) {
     return {
-      q: `in:${root}/${date.format("Y/MM")}/ title:${name}`
+      q: `in:${root}/${date.format("Y/MM")}/ user:${name}`
     };
   }
 }

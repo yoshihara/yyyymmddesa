@@ -37,12 +37,11 @@ export default class Extractor {
   }
 
   static name() {
-    const postTitle = $(".post-header")
-      .find(".post-title")
-      .find(".post-title__name")
-      .text();
-    // NOTE: コロン、スペース（半角・全角）、括弧（半角・全角）を名前とタイトルの切れ目とみなす
-    const nameAndTitle = postTitle.split(/[: 　（(]/);
-    return nameAndTitle[0];
+    let createdByText = $(".post-header")
+      .find(".post-header__meta")
+      .find(".post-author")
+      .find(".post-author__user")[0].innerText;
+
+    return createdByText.replace(/Created by /, "");
   }
 }
