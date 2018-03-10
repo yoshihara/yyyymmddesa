@@ -9,7 +9,6 @@ export default class UI {
     this.dom = null;
   }
 
-  // TODO styleをstyle DOM作って入れてクラスで見れるようにする
   showLoading() {
     let spinner = `<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>`;
     let dom = $(`<div class='row' id='yyyymmddesa-appended'>${spinner}</div>`);
