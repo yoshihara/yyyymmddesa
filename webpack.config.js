@@ -23,11 +23,12 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
+        test: /\.sass$/,
         exclude: /node_modules/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader' }
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' }
         ]
       }
     ]

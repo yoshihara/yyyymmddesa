@@ -35,15 +35,16 @@
     "@babel/preset-env": "^7.0.0-beta.40",
     "@babel/runtime": "^7.0.0-beta.40",
     "babel-loader": "8.0.0-beta.0",
+    "css-loader": "^0.28.10",
     "expose-loader": "^0.7.3",
     "node-sass": "^4.5.3",
     "npm-run-all": "^4.0.2",
     "prettier": "^1.11.1",
     "pug-cli": "^1.0.0-alpha6",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.3",
     "watchy": "^0.7.0",
-    "webpack": "^3.5.4",
-    "css-loader": "^0.28.10",
-    "style-loader": "^0.20.3"
+    "webpack": "^3.5.4"
   },
   "dependencies": {
     "jquery": "^3.2.1",
