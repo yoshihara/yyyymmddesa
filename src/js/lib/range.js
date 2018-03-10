@@ -36,3 +36,9 @@ export default class Range {
     return 0 <= i && i < this.posts.length;
   }
 }
+
+Range.prototype.toString = function() {
+  return `${this.prevIndex}<-${this.index}->${this.nextIndex}(in ${
+    this.posts.length
+  } posts)`;
+};

@@ -1,10 +1,8 @@
 "use strict";
 
-import Store from "./store.js";
-
 export default class Logger {
-  constructor() {
-    Store.getDebugflag().then(flag => (this.isDebug = flag));
+  constructor(isDebug) {
+    this.isDebug = isDebug;
   }
 
   log() {
