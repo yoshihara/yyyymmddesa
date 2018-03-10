@@ -1,9 +1,36 @@
 import $ from "jquery";
 
+class DebugMode {
+  constructor(flag) {
+    this.isDebug = flag;
+    this.display();
+  }
+
+  toggle() {
+    this.isDebug = !this.isDebug;
+    chrome.storage.local.set({ isDebug: this.isDebug }, () => {
+      this.display();
+    });
+  }
+
+  text() {
+    const toggleText = this.isDebug ? "on" : "off";
+    return `Debug mode: ${toggleText}`;
+  }
+
+  display() {
+    $(".options__is-debug").text(this.text());
+  }
+}
+
 $(function() {
-  var defaultConfig = { token: "" };
-  chrome.storage.local.get(defaultConfig, function(config) {
-    $(".options__token").val(config.token);
+  let debugMode;
+  var defaultInitData = { token: "", isDebug: false };
+  chrome.storage.local.get(defaultInitData, function(initData) {
+    $(".options__token").val(initData.token);
+
+    debugMode = new DebugMode(initData.isDebug);
+    $(".options__is-debug").text(debugMode.text());
   });
 
   $(".options__save").on("click", function(e) {
@@ -28,5 +55,9 @@ $(function() {
         $(".msg").text(message);
       });
     });
+  });
+
+  $(".options__is-debug").on("click", function(e) {
+    debugMode.toggle();
   });
 });
