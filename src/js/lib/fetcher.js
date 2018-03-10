@@ -51,12 +51,9 @@ export default class Fetcher {
     }
 
     // 取得した記事を繋いだ状態でrangeを取り直す
-    let posts = [prevMonthPosts, thisMonthPosts, nextMonthPosts];
-    let todayPosts = posts.reduce((accumulator, currentValue) => {
-      return accumulator.concat(currentValue);
-    });
+    let posts = prevMonthPosts.concat(thisMonthPosts).concat(nextMonthPosts);
 
-    return organizer.calculateOrders(todayPosts);
+    return organizer.calculateOrders(posts);
   }
 
   async fetchPosts(date, root, name, useCache = true) {
