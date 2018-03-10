@@ -17,7 +17,7 @@
     "watch:html": "watchy -w src/pug -- yarn run build:html",
     "watch:css": "watchy -w src/sass -- yarn run build:css",
     "watch": "npm-run-all clean -p watch:*",
-    "fmt": "prettier --write src/js/**/*.js"
+    "fmt": "prettier --write src/js/*.js src/js/**/*.js"
   },
   "repository": {
     "type": "git",
