@@ -20,6 +20,7 @@ if (match) {
     ui.showLoading();
 
     (async (date, root, name, id) => {
+      await fetcher.init();
       await fetcher
         .fetchRange(date, root, name, id)
         .then(range => {
@@ -28,6 +29,7 @@ if (match) {
         .catch(err => {
           console.log("Error occured in fetch:");
           console.error(err);
+          // TODO: uiでloadingを消すメソッドをつけて呼ぶ
           return;
         });
     })(date, root, name, id);

@@ -4,8 +4,9 @@ import Organizer from "./organizer.js";
 import Today from "./today.js";
 
 export default class Fetcher {
-  constructor() {
-    Store.getToken().then(token => (this.esa = new Esa(token)));
+  async init() {
+    const token = await Store.getToken();
+    this.esa = new Esa(token);
   }
 
   async fetchRange(date, root, name, id) {
