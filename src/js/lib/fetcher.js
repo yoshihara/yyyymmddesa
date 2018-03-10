@@ -13,9 +13,7 @@ export default class Fetcher {
     const today = new Today(date);
 
     let range;
-
     let [prevMonthPosts, thisMonthPosts, nextMonthPosts] = [[], [], []];
-    let prev, index, next;
 
     // 今月をキャッシュもしくはAPIで取得
     await this.fetchPosts(date, root, name).then(posts => {
@@ -25,8 +23,8 @@ export default class Fetcher {
 
     if (range.isValid) return range;
 
-    // prev, nextが今月の記事から取得できない、かつその月にprev, nextがありそうなときだけ再取得
-    // 基本的に月初から書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
+    // rangeが今月の記事だけではinvalidにならない、かつその月に本来ならrangeがとれそう＝月初もしくは月末でもないときだけ再取得
+    // 基本的に月初から記事を書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
     // NOTE: キャッシュがない状態で最新の記事を取ってきた場合に2回APIを叩いてしまう
     if (
       (!range.isValidPrevPost && !today.isFirstDate) ||
@@ -52,7 +50,7 @@ export default class Fetcher {
       });
     }
 
-    // 取得した記事を繋いだ状態でindexを取り直す
+    // 取得した記事を繋いだ状態でrangeを取り直す
     let posts = [prevMonthPosts, thisMonthPosts, nextMonthPosts];
     let todayPosts = posts.reduce((accumulator, currentValue) => {
       return accumulator.concat(currentValue);
