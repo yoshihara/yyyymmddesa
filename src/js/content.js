@@ -25,12 +25,16 @@ if (match) {
       await fetcher
         .fetchRange(date, root, name, id)
         .then(range => {
-          ui.showLinks(range);
+          if (range.isValid) {
+            ui.showLinks(range);
+          } else {
+            ui.remove();
+          }
         })
         .catch(err => {
           console.log("Error occured in fetch:");
           console.error(err);
-          // TODO: uiでloadingを消すメソッドをつけて呼ぶ
+          ui.remove();
           return;
         });
     })(date, root, name, id);

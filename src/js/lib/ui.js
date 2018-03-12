@@ -23,6 +23,10 @@ export default class UI {
     this.dom.wrapInner(spinner);
   }
 
+  remove() {
+    this.dom.remove();
+  }
+
   showLinks(range) {
     if (this.dom == null) return;
 
