@@ -1,6 +1,6 @@
 "use strict";
 
-import style from "./content.sass";
+import style from "../sass/content.sass";
 import moment from "moment";
 
 import Extractor from "./lib/extractor.js";
