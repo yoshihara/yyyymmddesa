@@ -17,6 +17,7 @@ if (match) {
 
   if (root && date && name) {
     const fetcher = new Fetcher();
+    ui.prepare();
     ui.showLoading();
 
     (async (date, root, name, id) => {

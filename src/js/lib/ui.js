@@ -8,12 +8,19 @@ export default class UI {
     this.dom = null;
   }
 
-  showLoading() {
-    let spinner = `<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>`;
-    let dom = $(`<div class='row' id='yyyymmddesa-appended'>${spinner}</div>`);
-
-    this.headDom.before(dom);
+  prepare() {
+    let dom = $(`<div class='row' id='yyyymmddesa-appended'></div>`);
     this.dom = dom;
+    this.headDom.before(this.dom);
+  }
+
+  showLoading() {
+    if (this.dom == null) return;
+
+    let spinner = $(
+      "<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>"
+    );
+    this.dom.wrapInner(spinner);
   }
 
   showLinks(range) {
