@@ -31,10 +31,12 @@ export default class Fetcher {
       root,
       name
     );
-    await this.fetchPosts(date, root, name).then(posts => {
-      thisMonthPosts = posts;
-      range = organizer.calculateOrders(thisMonthPosts);
-    });
+    await this.fetchPosts(date, root, name, { cacheIgnoreLength: 0 }).then(
+      posts => {
+        thisMonthPosts = posts;
+        range = organizer.calculateOrders(thisMonthPosts);
+      }
+    );
 
     if (!thisMonthPosts.length) {
       this.logger.log(
@@ -59,10 +61,12 @@ export default class Fetcher {
       this.logger.log(
         "[INFO] prev/next posts aren't detected in this month, so refetch posts via API."
       );
-      await this.fetchPosts(date, root, name, false).then(posts => {
-        thisMonthPosts = posts;
-        range = organizer.calculateOrders(thisMonthPosts);
-      });
+      await this.fetchPosts(date, root, name, { useCache: false }).then(
+        posts => {
+          thisMonthPosts = posts;
+          range = organizer.calculateOrders(thisMonthPosts);
+        }
+      );
     }
 
     // 前のものがない場合、先月分を取ってくる
@@ -97,16 +101,22 @@ export default class Fetcher {
     return range;
   }
 
-  async fetchPosts(date, root, name, useCache = true) {
+  async fetchPosts(date, root, name, opt = {}) {
+    let defaultOptions = { useCache: true, cacheIgnoreLength: null };
+    let options = Object.assign(defaultOptions, opt);
     let cache = null;
 
-    if (useCache) {
+    if (options.useCache) {
       this.logger.log("  [INFO] Use Cache for", date, root, name);
       cache = await Store.getCache({ date, root, name });
     }
 
-    if (cache == null) {
-      this.logger.log("  [INFO] Cache length is null");
+    if (!cache) {
+      this.logger.log("  [INFO] Cache length is null, fetch via API");
+    } else if (cache.length == options.cacheIgnoreLength) {
+      this.logger.log(
+        `  [INFO] Cache length is ${cache.length}, fetch via API`
+      );
     } else {
       this.logger.log(
         `  [INFO] Cache length is ${cache.length}. Return cache.`
