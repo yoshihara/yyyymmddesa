@@ -44,16 +44,16 @@ $(function() {
 
   $(".options__clear").on("click", function(e) {
     chrome.storage.local.get(null, function(cache) {
-      let removedKeys = [];
-      removedKeys = Object.keys(cache).filter(key => {
+      let clearedKeys = [];
+      clearedKeys = Object.keys(cache).filter(key => {
         if (key.startsWith("cache-")) return key;
         return null;
       });
 
-      chrome.storage.local.remove(removedKeys, function(error) {
+      chrome.storage.local.remove(clearedKeys, function(error) {
         let message = "";
         if (error) message = "Failed removing cache...";
-        else message = "Removed cache!";
+        else message = "Cleared cache!";
         $(".msg").text(message);
       });
     });
