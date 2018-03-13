@@ -2,6 +2,21 @@ body
   margin: 0
   font-size: 16px
 
+a
+ color: #4286f4
+
+a:link
+ color: #4286f4
+
+a:hover
+ color: #f49541
+
+a:visited
+ color: #1679e8
+
+a:active
+ color: #8841f4
+
 .container
   max-width: 960px
   width: 100%
@@ -13,6 +28,13 @@ body
   display: block
   margin: 40px 0
   font-size: 1rem
+
+  .options__description
+    display: block
+    margin-top: 5px
+    padding-left: 2em
+    color: #555
+    font-size: 90%
 
 .msg
   color: #e58029
@@ -30,6 +52,9 @@ body
 
   > input
     border-color: #CCC
+
+  > input.options__token
+    width: 30em
 
   > button.options__save
     background-color: #0a9b94

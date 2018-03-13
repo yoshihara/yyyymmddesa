@@ -12,14 +12,21 @@ html(lang="ja")
         .form-items
           label esa token
         .form-items
-          input.options__token(placeholder="トークン" title="トークン")
+          input.options__token(placeholder="token for esa.io")
         .form-items
-          button.options__save(type="button") Save Options
+          button.options__save(type="button") Save Token
+        p.options__description You can get token for esa.io in 
+          a(href="https://YOUR-TEAM.esa.io/user/applications" target="_blank"  rel="noopener noreferrer") https://[YOUR-TEAM].esa.io/user/applications
+          | .
+          br
+          | The token is expected to have "read" scope.
       .row
         .form-items
           button.options__clear(type="button") Clear cache
-
+        p.options__description Please click it if something is wrong.
       .row
         .form-items
           button.options__is-debug(type="button") Debug mode
+        p.options__description When Debug mode is "on", developer tool's console shows fetch log.
+
   script(src="/options.bundle.js")
