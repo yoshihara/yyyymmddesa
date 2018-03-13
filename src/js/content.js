@@ -25,7 +25,7 @@ if (match) {
       await fetcher
         .fetchRange(date, root, name, id)
         .then(range => {
-          if (range.isValid) {
+          if (range.isValidPrevPost || range.isValidNextPost) {
             ui.showLinks(range);
           } else {
             ui.remove();
