@@ -15,7 +15,7 @@ if (match) {
   const id = match[1];
   const { root, date, name, teamName } = Extractor.currentPostInfo();
 
-  if (root && date && name && teamName) {
+  if (date && name && teamName) {
     const fetcher = new Fetcher(teamName);
     ui.prepare();
     ui.showLoading();

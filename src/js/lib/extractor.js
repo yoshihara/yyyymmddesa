@@ -5,11 +5,11 @@ import moment from "moment";
 
 export default class Extractor {
   static currentPostInfo() {
-    const match = this.category().match(/^(.+)\/(\d\d\d\d\/\d\d\/\d\d)$/);
+    const match = this.category().match(/^(.+\/)?(\d\d\d\d\/\d\d\/\d\d)$/);
 
     if (!match) return {};
 
-    const root = match[1];
+    const root = match[1] !== undefined ? match[1].replace("/", "") : "";
     const yearAndMonth = match[2];
     const name = this.name();
     const teamName = this.teamName();
