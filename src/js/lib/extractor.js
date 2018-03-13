@@ -12,10 +12,11 @@ export default class Extractor {
     const root = match[1];
     const yearAndMonth = match[2];
     const name = this.name();
+    const teamName = this.teamName();
 
     const date = new moment(yearAndMonth, "YYYY/MM/DD");
 
-    return { root, date, name };
+    return { root, date, name, teamName };
   }
 
   static category() {
@@ -43,5 +44,9 @@ export default class Extractor {
       .find(".post-author__user")[0].innerText;
 
     return createdByText.replace(/Created by /, "");
+  }
+
+  static teamName() {
+    return window.location.hostname.replace(".esa.io", "");
   }
 }

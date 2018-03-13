@@ -13,10 +13,10 @@ const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 if (match) {
   const ui = new UI();
   const id = match[1];
-  const { root, date, name } = Extractor.currentPostInfo();
+  const { root, date, name, teamName } = Extractor.currentPostInfo();
 
-  if (root && date && name) {
-    const fetcher = new Fetcher();
+  if (root && date && name && teamName) {
+    const fetcher = new Fetcher(teamName);
     ui.prepare();
     ui.showLoading();
 

@@ -5,6 +5,10 @@ import Today from "./today.js";
 import Logger from "./logger.js";
 
 export default class Fetcher {
+  constructor(teamName) {
+    this.teamName = teamName;
+  }
+
   async init() {
     const token = await Store.getToken();
     this.esa = new Esa(token);
@@ -22,7 +26,7 @@ export default class Fetcher {
 
     // 今月をキャッシュもしくはAPIで取得
     this.logger.log(
-      "[INFO] Fetch this month posts from cache/API",
+      `[INFO] Fetch this month posts from cache/API in ${this.teamName} team`,
       date,
       root,
       name
@@ -114,7 +118,7 @@ export default class Fetcher {
     this.logger.log("  [INFO] Fetch posts from API for", date, root, name);
     this.logger.log("  [INFO] Fetch query is", q.q);
 
-    let posts = JSON.parse(await this.esa.getPosts(q)).posts;
+    let posts = JSON.parse(await this.esa.getPosts(this.teamName, q)).posts;
 
     this.logger.log(`  [INFO] Fetched ${posts.length} posts`);
 
