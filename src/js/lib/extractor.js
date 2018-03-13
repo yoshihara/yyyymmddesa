@@ -11,10 +11,10 @@ export default class Extractor {
 
     const root = match[1] !== undefined ? match[1].replace("/", "") : "";
     const yearAndMonth = match[2];
+    const date = new moment(yearAndMonth, "YYYY/MM/DD");
+
     const name = this.name();
     const teamName = this.teamName();
-
-    const date = new moment(yearAndMonth, "YYYY/MM/DD");
 
     return { root, date, name, teamName };
   }
