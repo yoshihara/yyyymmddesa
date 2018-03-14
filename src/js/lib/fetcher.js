@@ -102,8 +102,8 @@ export default class Fetcher {
   }
 
   async fetchPosts(date, root, name, opt = {}) {
-    let defaultOptions = { useCache: true, cacheIgnoreLength: null };
-    let options = Object.assign(defaultOptions, opt);
+    const defaultOptions = { useCache: true, cacheIgnoreLength: null };
+    const options = Object.assign(defaultOptions, opt);
     let cache = null;
 
     if (options.useCache) {
