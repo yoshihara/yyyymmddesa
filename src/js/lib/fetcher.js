@@ -44,7 +44,8 @@ export default class Fetcher {
       );
       return {};
     }
-    if (range.isValid) {
+
+    if (this.isValidPrevPost && this.isValidNextPost) {
       this.logger.log(
         "[INFO] prev/next posts are detected in this month. Exit"
       );

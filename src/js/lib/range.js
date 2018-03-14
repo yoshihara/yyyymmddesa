@@ -16,14 +16,6 @@ export default class Range {
     return this.posts[this.nextIndex];
   }
 
-  get isValid() {
-    return (
-      this.isValidPrevPost &&
-      this.isValidIndex(this.index) &&
-      this.isValidNextPost
-    );
-  }
-
   get isValidPrevPost() {
     return this.isValidIndex(this.prevIndex);
   }
