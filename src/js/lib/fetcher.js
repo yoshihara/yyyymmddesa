@@ -54,9 +54,9 @@ export default class Fetcher {
       return range;
     }
 
-    // rangeが今月の記事だけではinvalidにならない、かつその月に本来ならrangeがとれそう＝月初もしくは月末でもないときだけ再取得
+    // rangeがキャッシュから取ってきた今月の記事だけではvalidにならない、
+    // かつその月に本来ならrangeがとれそう＝月初もしくは月末でもないときだけ再取得
     // 基本的に月初から記事を書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
-    // NOTE: キャッシュがない状態で最新の記事を取ってきた場合に2回APIを叩いてしまう
     if (
       isCachedThisMonth &&
       ((!range.isValidPrevPost && !today.isFirstDate) ||
