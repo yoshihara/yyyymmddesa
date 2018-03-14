@@ -1,6 +1,6 @@
 {
   "name": "yyyymmddesa",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tiny tools for daily report in esa.io",
   "main": "content.js",
   "private": false,
