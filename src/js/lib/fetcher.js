@@ -60,7 +60,7 @@ export default class Fetcher {
       (!range.isValidNextPost && !today.isLastDate)
     ) {
       this.logger.log(
-        "[INFO] prev/next posts aren't detected in this month, so refetch posts via API."
+        "[INFO] prev/next posts aren't detected in this month, so re-fetch posts via API"
       );
       await this.fetchPosts(date, root, name, { useCache: false }).then(
         posts => {
@@ -120,7 +120,7 @@ export default class Fetcher {
       );
     } else {
       this.logger.log(
-        `  [INFO] Cache length is ${cache.length}. Return cache.`
+        `  [INFO] Cache length is ${cache.length}. Return cache`
       );
       return cache;
     }
