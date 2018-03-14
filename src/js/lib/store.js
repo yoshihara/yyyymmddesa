@@ -39,9 +39,9 @@ export default class Store {
     defaultCache[key] = JSON.stringify(cache);
 
     return new Promise((resolve, reject) => {
-      chrome.storage.local.set(defaultCache, function(error) {
-        if (error) reject(error);
-        resolve(error);
+      chrome.storage.local.set(defaultCache, function() {
+        if (runtime.lastError) reject(runtime.lastError);
+        resolve();
       });
     });
   }

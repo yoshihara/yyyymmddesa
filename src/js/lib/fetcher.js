@@ -134,7 +134,7 @@ export default class Fetcher {
     this.logger.log(`  [INFO] Fetched ${posts.length} posts`);
 
     await Store.setCache({ date, root, name }, posts).catch(error => {
-      console.error(chrome.runtime.lastError, error);
+      console.error(error);
     });
 
     return posts;
