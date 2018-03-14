@@ -22,6 +22,7 @@ export default class Fetcher {
     const today = new Today(date);
 
     let range;
+    let isCachedThisMonth = false;
     let [prevMonthPosts, thisMonthPosts, nextMonthPosts] = [[], [], []];
 
     // 今月をキャッシュもしくはAPIで取得
@@ -32,8 +33,9 @@ export default class Fetcher {
       name
     );
     await this.fetchPosts(date, root, name, { cacheIgnoreLength: 0 }).then(
-      posts => {
-        thisMonthPosts = posts;
+      response => {
+        isCachedThisMonth = response.isCache;
+        thisMonthPosts = response.posts;
         range = organizer.calculateOrders(thisMonthPosts);
       }
     );
@@ -56,15 +58,16 @@ export default class Fetcher {
     // 基本的に月初から記事を書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
     // NOTE: キャッシュがない状態で最新の記事を取ってきた場合に2回APIを叩いてしまう
     if (
-      (!range.isValidPrevPost && !today.isFirstDate) ||
-      (!range.isValidNextPost && !today.isLastDate)
+      isCachedThisMonth &&
+      ((!range.isValidPrevPost && !today.isFirstDate) ||
+        (!range.isValidNextPost && !today.isLastDate))
     ) {
       this.logger.log(
         "[INFO] prev/next posts aren't detected in this month, so re-fetch posts via API"
       );
       await this.fetchPosts(date, root, name, { useCache: false }).then(
-        posts => {
-          thisMonthPosts = posts;
+        response => {
+          thisMonthPosts = response.posts;
           range = organizer.calculateOrders(thisMonthPosts);
         }
       );
@@ -77,8 +80,8 @@ export default class Fetcher {
         range,
         today.prevMonth.toString()
       );
-      await this.fetchPosts(today.prevMonth, root, name).then(posts => {
-        prevMonthPosts = posts;
+      await this.fetchPosts(today.prevMonth, root, name).then(response => {
+        prevMonthPosts = response.posts;
       });
     }
 
@@ -89,8 +92,8 @@ export default class Fetcher {
         range,
         today.nextMonth.toString()
       );
-      await this.fetchPosts(today.nextMonth, root, name).then(posts => {
-        nextMonthPosts = posts;
+      await this.fetchPosts(today.nextMonth, root, name).then(response => {
+        nextMonthPosts = response.posts;
       });
     }
 
@@ -110,19 +113,29 @@ export default class Fetcher {
     if (options.useCache) {
       this.logger.log("  [INFO] Use Cache for", date, root, name);
       cache = await Store.getCache({ date, root, name });
+    } else {
+      this.logger.log(
+        "  [INFO] By option, avoid to use Cache for",
+        date,
+        root,
+        name
+      );
     }
 
     if (!cache) {
-      this.logger.log("  [INFO] Cache length is null, fetch via API");
+      this.logger.log(
+        "  [INFO] Cache length is null, fetch via API",
+        date,
+        root,
+        name
+      );
     } else if (cache.length == options.cacheIgnoreLength) {
       this.logger.log(
         `  [INFO] Cache length is ${cache.length}, fetch via API`
       );
     } else {
-      this.logger.log(
-        `  [INFO] Cache length is ${cache.length}. Return cache`
-      );
-      return cache;
+      this.logger.log(`  [INFO] Cache length is ${cache.length}. Return cache`);
+      return { posts: cache, isCache: true };
     }
 
     let q = this.query(root, date, name);
@@ -137,7 +150,7 @@ export default class Fetcher {
       console.error(error);
     });
 
-    return posts;
+    return { posts, isCache: false };
   }
 
   query(root, date, name) {
