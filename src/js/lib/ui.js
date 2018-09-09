@@ -9,7 +9,7 @@ export default class UI {
   }
 
   prepare() {
-    let dom = $(`<div class='row' id='yyyymmddesa-appended'></div>`);
+    let dom = $(`<div class='row link' id='yyyymmddesa-appended'></div>`);
     this.dom = dom;
     this.headDom.before(this.dom);
   }
