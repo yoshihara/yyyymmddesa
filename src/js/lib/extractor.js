@@ -23,18 +23,14 @@ export default class Extractor {
     const categoryItem = $(".post-header")
       .find(".category-path")
       .children(".category-path__item");
-    let categoryPaths = [];
+    let categoryPath = ""
 
     for (let i = 0; i < categoryItem.length; i++) {
-      let li = categoryItem[i];
-      categoryPaths = categoryPaths.concat(
-        $(li)
-          .text()
-          .replace(/[ \n]/g, "")
-      );
+      let category = $(categoryItem[i]).text().replace(/[ \n]/g, "");
+      categoryPath = `${categoryPath}/${category}`
     }
 
-    return categoryPaths.join("/");
+    return categoryPath;
   }
 
   static name() {
