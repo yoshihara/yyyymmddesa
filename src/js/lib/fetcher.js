@@ -17,7 +17,7 @@ export default class Fetcher {
     this.logger = new Logger(flag);
   }
 
-  async fetchRange(date, root, name, id) {
+  async fetch(date, root, name, id) {
     const today = new Today(date);
 
     let scope;

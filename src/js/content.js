@@ -21,7 +21,7 @@ if (match) {
     (async (date, root, name, id) => {
       await fetcher.init();
       await fetcher
-        .fetchRange(date, root, name, id)
+        .fetch(date, root, name, id)
         .then((scope) => {
           if (scope.isValidPrevPost || scope.isValidNextPost) {
             ui.showLinks(scope);
