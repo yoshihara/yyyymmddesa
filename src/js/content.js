@@ -6,7 +6,6 @@ import Extractor from './lib/extractor.js';
 import Fetcher from './lib/fetcher.js';
 import UI from './lib/ui.js';
 
-const path = window.location.pathname;
 const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 
 if (match) {
