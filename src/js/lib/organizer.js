@@ -8,7 +8,7 @@ export default class Organizer {
   }
 
   calculateOrders(posts) {
-    let post = this.sortPosts(posts).filter(post => {
+    let post = this.sortPosts(posts).filter((post) => {
       if (post.number == this.id) return post;
     })[0];
 

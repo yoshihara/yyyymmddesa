@@ -33,7 +33,7 @@ export default class Store {
 
   static setCache(obj, posts) {
     const key = this.key(obj);
-    const cache = posts.map(post => {
+    const cache = posts.map((post) => {
       let { number, full_name, url } = post;
       return { number, full_name, url };
     });

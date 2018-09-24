@@ -24,14 +24,14 @@ if (match) {
       await fetcher.init();
       await fetcher
         .fetchRange(date, root, name, id)
-        .then(range => {
+        .then((range) => {
           if (range.isValidPrevPost || range.isValidNextPost) {
             ui.showLinks(range);
           } else {
             ui.remove();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log('Error occured in fetch:');
           console.error(err);
           ui.remove();

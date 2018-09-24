@@ -16,25 +16,25 @@ export default class Esa {
       path: `/v1/teams/${teamName}/posts?${querystring.stringify(q)}`,
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${this.token}`
-      }
+        Authorization: `Bearer ${this.token}`,
+      },
     };
 
     return new Promise((resolve, reject) => {
       https
-        .get(options, res => {
+        .get(options, (res) => {
           let body = '';
           res.setEncoding('utf8');
 
-          res.on('data', chunk => {
+          res.on('data', (chunk) => {
             body += chunk;
           });
 
-          res.on('end', res => {
+          res.on('end', (_res) => {
             resolve(body);
           });
         })
-        .on('error', e => {
+        .on('error', (e) => {
           console.error(e);
           reject(e);
         });

@@ -18,7 +18,7 @@ export default class UI {
     if (this.dom == null) return;
 
     let spinner = $(
-      "<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>"
+      "<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>",
     );
     this.dom.wrapInner(spinner);
   }
@@ -37,7 +37,7 @@ export default class UI {
       this.dom.append(
         `<div id='yyyymmddesa-prev-link'><a href='${prevPost.url}'>${
           prevPost.full_name
-        }</a></div>`
+        }</a></div>`,
       );
     }
 
@@ -45,7 +45,7 @@ export default class UI {
       this.dom.append(
         `<div id='yyyymmddesa-next-link'><a href='${nextPost.url}'>${
           nextPost.full_name
-        }</a></div>`
+        }</a></div>`,
       );
     }
 

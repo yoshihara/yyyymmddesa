@@ -45,7 +45,7 @@ $(function() {
   $('.options__clear').on('click', function(e) {
     chrome.storage.local.get(null, function(cache) {
       let clearedKeys = [];
-      clearedKeys = Object.keys(cache).filter(key => {
+      clearedKeys = Object.keys(cache).filter((key) => {
         if (key.startsWith('cache-')) return key;
         return null;
       });
