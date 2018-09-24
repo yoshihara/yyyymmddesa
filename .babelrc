@@ -10,7 +10,7 @@
     [
       "@babel/preset-env", {
         "targets": {
-          "browsers": ["chrome > 60"]
+          "browsers": ["latest 2 chrome version"]
         }
       }
     ]
