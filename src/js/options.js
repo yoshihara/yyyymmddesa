@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import style from '../sass/options.sass';
+import '../sass/options.sass';
 
 class DebugMode {
   constructor(flag) {
