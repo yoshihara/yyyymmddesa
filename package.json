@@ -15,7 +15,8 @@
     "watch:metadata": "watchy -w metadata -- yarn run build:metadata",
     "watch:html": "watchy -w src/pug -- yarn run build:html",
     "watch": "npm-run-all clean -p watch:*",
-    "fmt": "prettier --write src/js/*.js src/js/**/*.js"
+    "fmt": "prettier --write src/js/*.js src/js/**/*.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "babel-loader": "8.0.0-beta.0",
     "css-loader": "^0.28.10",
     "expose-loader": "^0.7.3",
+    "jest": "^23.6.0",
     "node-sass": "^4.5.3",
     "npm-run-all": "^4.0.2",
     "prettier": "^1.11.1",
@@ -47,5 +49,14 @@
   "dependencies": {
     "jquery": "^3.2.1",
     "moment": "^2.21.0"
+  },
+  "jest": {
+    "automock": true,
+    "unmockedModulePathPatterns": [
+      "node_modules"
+    ],
+    "setupFiles": [
+      "./__test__/setup-jest.js"
+    ]
   }
 }
