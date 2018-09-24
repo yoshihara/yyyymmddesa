@@ -1,6 +1,6 @@
 import Store from './store.js';
 import Esa from './esa.js';
-import Organizer from './organizer.js';
+import Range from './range.js';
 import Today from './today.js';
 import Logger from './logger.js';
 
@@ -18,7 +18,6 @@ export default class Fetcher {
   }
 
   async fetchRange(date, root, name, id) {
-    const organizer = new Organizer(id);
     const today = new Today(date);
 
     let range;
@@ -36,7 +35,7 @@ export default class Fetcher {
       (response) => {
         isCachedThisMonth = response.isCache;
         thisMonthPosts = response.posts;
-        range = organizer.calculateOrders(thisMonthPosts);
+        range = new Range(thisMonthPosts, id);
       },
     );
 
@@ -68,7 +67,7 @@ export default class Fetcher {
       await this.fetchPosts(date, root, name, { useCache: false }).then(
         (response) => {
           thisMonthPosts = response.posts;
-          range = organizer.calculateOrders(thisMonthPosts);
+          range = new Range(thisMonthPosts, id);
         },
       );
     }
@@ -99,7 +98,7 @@ export default class Fetcher {
 
     // 取得した記事を繋いだ状態でrangeを取り直す
     let posts = prevMonthPosts.concat(thisMonthPosts).concat(nextMonthPosts);
-    range = organizer.calculateOrders(posts);
+    range = new Range(posts, id);
     this.logger.log(`[INFO] prev/next posts are detected in ${range}. Exit`);
 
     return range;

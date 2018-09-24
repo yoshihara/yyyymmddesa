@@ -1,11 +1,30 @@
 'use strict';
 
 export default class Range {
-  constructor(obj) {
-    this.prevIndex = obj.prevIndex;
-    this.index = obj.index;
-    this.nextIndex = obj.nextIndex;
-    this.posts = obj.posts;
+  constructor(rawPosts, id) {
+    id = parseInt(id);
+
+    let posts = rawPosts.sort((post1, post2) => {
+      let fullName1 = post1.full_name;
+      let fullName2 = post2.full_name;
+
+      if (fullName1 > fullName2) return 1;
+      else if (fullName1 < fullName2) return -1;
+      else return 0;
+    });
+
+    let todayPost = posts.filter((post) => {
+      if (post.number == id) return post;
+    })[0];
+
+    if (!todayPost) {
+      throw Error(`Invalid posts for post id: ${id}`);
+    }
+
+    this.index = posts.indexOf(todayPost);
+    this.prevIndex = this.index - 1;
+    this.nextIndex = this.index + 1;
+    this.posts = posts;
   }
 
   get prevPost() {
