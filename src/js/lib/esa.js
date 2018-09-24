@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-import https from "https";
-import querystring from "querystring";
+import https from 'https';
+import querystring from 'querystring';
 
 export default class Esa {
   constructor(token) {
@@ -11,9 +11,9 @@ export default class Esa {
   getPosts(teamName, q) {
     let options = {
       port: 443,
-      hostname: "api.esa.io",
+      hostname: 'api.esa.io',
       path: `/v1/teams/${teamName}/posts?${querystring.stringify(q)}`,
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${this.token}`
       }
@@ -22,18 +22,18 @@ export default class Esa {
     return new Promise((resolve, reject) => {
       https
         .get(options, res => {
-          let body = "";
-          res.setEncoding("utf8");
+          let body = '';
+          res.setEncoding('utf8');
 
-          res.on("data", chunk => {
+          res.on('data', chunk => {
             body += chunk;
           });
 
-          res.on("end", res => {
+          res.on('end', res => {
             resolve(body);
           });
         })
-        .on("error", e => {
+        .on('error', e => {
           console.error(e);
           reject(e);
         });

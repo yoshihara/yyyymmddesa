@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import Range from "./range.js";
+import Range from './range.js';
 
 export default class Organizer {
   constructor(id) {

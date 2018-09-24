@@ -1,8 +1,8 @@
-import Store from "./store.js";
-import Esa from "./esa.js";
-import Organizer from "./organizer.js";
-import Today from "./today.js";
-import Logger from "./logger.js";
+import Store from './store.js';
+import Esa from './esa.js';
+import Organizer from './organizer.js';
+import Today from './today.js';
+import Logger from './logger.js';
 
 export default class Fetcher {
   constructor(teamName) {
@@ -42,14 +42,14 @@ export default class Fetcher {
 
     if (!thisMonthPosts.length) {
       this.logger.log(
-        "[WARN] Fetched this month posts in this team is 0. Exit"
+        '[WARN] Fetched this month posts in this team is 0. Exit'
       );
       return {};
     }
 
     if (this.isValidPrevPost && this.isValidNextPost) {
       this.logger.log(
-        "[INFO] prev/next posts are detected in this month. Exit"
+        '[INFO] prev/next posts are detected in this month. Exit'
       );
       return range;
     }
@@ -76,7 +76,7 @@ export default class Fetcher {
     // 前のものがない場合、先月分を取ってくる
     if (!range.isValidPrevPost) {
       this.logger.log(
-        "[INFO] Invalid prev post in this month",
+        '[INFO] Invalid prev post in this month',
         range,
         today.prevMonth.toString()
       );
@@ -88,7 +88,7 @@ export default class Fetcher {
     // 次のものがない場合、来月分を取ってくる
     if (!range.isValidNextPost) {
       this.logger.log(
-        "[INFO] Invalid next post in this month",
+        '[INFO] Invalid next post in this month',
         range,
         today.nextMonth.toString()
       );
@@ -111,11 +111,11 @@ export default class Fetcher {
     let cache = null;
 
     if (options.useCache) {
-      this.logger.log("  [INFO] Use Cache for", date, root, name);
+      this.logger.log('  [INFO] Use Cache for', date, root, name);
       cache = await Store.getCache({ date, root, name });
     } else {
       this.logger.log(
-        "  [INFO] By option, avoid to use Cache for",
+        '  [INFO] By option, avoid to use Cache for',
         date,
         root,
         name
@@ -124,7 +124,7 @@ export default class Fetcher {
 
     if (!cache) {
       this.logger.log(
-        "  [INFO] Cache length is null, fetch via API",
+        '  [INFO] Cache length is null, fetch via API',
         date,
         root,
         name
@@ -139,8 +139,8 @@ export default class Fetcher {
     }
 
     let q = this.query(root, date, name);
-    this.logger.log("  [INFO] Fetch posts from API for", date, root, name);
-    this.logger.log("  [INFO] Fetch query is", q.q);
+    this.logger.log('  [INFO] Fetch posts from API for', date, root, name);
+    this.logger.log('  [INFO] Fetch query is', q.q);
 
     let posts = JSON.parse(await this.esa.getPosts(this.teamName, q)).posts;
 
@@ -155,7 +155,7 @@ export default class Fetcher {
 
   query(root, date, name) {
     return {
-      q: `in:${root}/${date.format("Y/MM")}/ user:${name}`
+      q: `in:${root}/${date.format('Y/MM')}/ user:${name}`
     };
   }
 }

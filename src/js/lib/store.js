@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 export default class Store {
   static getDebugflag() {
@@ -48,6 +48,6 @@ export default class Store {
 
   static key(obj) {
     let { date, root, name } = obj;
-    return `cache-${date.format("YMM")}-${root}-${name}`;
+    return `cache-${date.format('YMM')}-${root}-${name}`;
   }
 }

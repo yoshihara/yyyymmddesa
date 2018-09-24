@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-import $ from "jquery";
+import $ from 'jquery';
 
 export default class UI {
   constructor() {
-    this.headDom = $("#comments").parent();
+    this.headDom = $('#comments').parent();
     this.dom = null;
   }
 
@@ -50,7 +50,7 @@ export default class UI {
     }
 
     if (prevPost || nextPost) {
-      const description = "This links are created by yyyymmddesa.";
+      const description = 'This links are created by yyyymmddesa.';
       const descriptionDom = `<div id='yyyymmddesa-description'>${description}</div>`;
       this.dom.append(descriptionDom);
     }
