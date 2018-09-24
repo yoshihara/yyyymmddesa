@@ -35,14 +35,14 @@ $(function() {
     $('.options__is-debug').text(debugMode.text());
   });
 
-  $('.options__save').on('click', function(e) {
+  $('.options__save').on('click', function() {
     const token = $('.options__token').val();
     chrome.storage.local.set({ token: token }, function() {
       $('.msg').text('saved!');
     });
   });
 
-  $('.options__clear').on('click', function(e) {
+  $('.options__clear').on('click', function() {
     chrome.storage.local.get(null, function(cache) {
       let clearedKeys = [];
       clearedKeys = Object.keys(cache).filter((key) => {
@@ -59,7 +59,7 @@ $(function() {
     });
   });
 
-  $('.options__is-debug').on('click', function(e) {
+  $('.options__is-debug').on('click', function() {
     debugMode.toggle();
   });
 });
