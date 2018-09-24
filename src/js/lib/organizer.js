@@ -12,6 +12,10 @@ export default class Organizer {
       if (post.number == this.id) return post;
     })[0];
 
+    if (!post) {
+      throw Error(`Invalid posts for post id: ${this.id}`);
+    }
+
     const index = posts.indexOf(post);
     const [prev, next] = [index - 1, index + 1];
 
