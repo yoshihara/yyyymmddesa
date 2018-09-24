@@ -1,18 +1,10 @@
 {
-  "plugins": [
-    ["@babel/transform-runtime", {
-      "helpers": false,
-      "polyfill": false,
-      "regenerator": true
-    }]
-  ],
+  "plugins": ["@babel/plugin-transform-runtime"],
   "presets": [
-    [
-      "@babel/preset-env", {
-        "targets": {
-          "browsers": ["latest 2 chrome version"]
-        }
+    ["@babel/preset-env", {
+      "targets": {
+        "browsers": ["last 2 Chrome versions"]
       }
-    ]
+    }]
   ]
 }
