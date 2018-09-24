@@ -1,5 +1,7 @@
 'use strict';
 
+import Promise from 'bluebird';
+
 export default class Store {
   static getDebugflag() {
     return new Promise((resolve, _reject) => {

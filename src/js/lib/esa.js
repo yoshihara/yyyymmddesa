@@ -2,6 +2,7 @@
 
 import https from 'https';
 import querystring from 'querystring';
+import Promise from 'bluebird';
 
 export default class Esa {
   constructor(token) {
