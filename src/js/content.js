@@ -1,7 +1,6 @@
 'use strict';
 
 import '../sass/content.sass';
-import moment from 'moment';
 
 import Extractor from './lib/extractor.js';
 import Fetcher from './lib/fetcher.js';
