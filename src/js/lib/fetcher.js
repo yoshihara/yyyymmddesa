@@ -1,6 +1,6 @@
 import Store from './store.js';
 import Esa from './esa.js';
-import Range from './range.js';
+import Scope from './scope.js';
 import Today from './today.js';
 import Logger from './logger.js';
 
@@ -20,7 +20,7 @@ export default class Fetcher {
   async fetchRange(date, root, name, id) {
     const today = new Today(date);
 
-    let range;
+    let scope;
     let isCachedThisMonth = false;
     let [prevMonthPosts, thisMonthPosts, nextMonthPosts] = [[], [], []];
 
@@ -35,7 +35,7 @@ export default class Fetcher {
       (response) => {
         isCachedThisMonth = response.isCache;
         thisMonthPosts = response.posts;
-        range = new Range(thisMonthPosts, id);
+        scope = new Scope(thisMonthPosts, id);
       },
     );
 
@@ -50,16 +50,16 @@ export default class Fetcher {
       this.logger.log(
         '[INFO] prev/next posts are detected in this month. Exit',
       );
-      return range;
+      return scope;
     }
 
-    // rangeがキャッシュから取ってきた今月の記事だけではvalidにならない、
-    // かつその月に本来ならrangeがとれそう＝月初もしくは月末でもないときだけ再取得
+    // scopeがキャッシュから取ってきた今月の記事だけではvalidにならない、
+    // かつその月に本来ならscopeがとれそう＝月初もしくは月末でもないときだけ再取得
     // 基本的に月初から記事を書いていけば起きないはずだが、後から抜けていた日報を書いたときなどをフォローするため
     if (
       isCachedThisMonth &&
-      ((!range.isValidPrevPost && !today.isFirstDate) ||
-        (!range.isValidNextPost && !today.isLastDate))
+      ((!scope.isValidPrevPost && !today.isFirstDate) ||
+        (!scope.isValidNextPost && !today.isLastDate))
     ) {
       this.logger.log(
         "[INFO] prev/next posts aren't detected in this month, so re-fetch posts via API",
@@ -67,16 +67,16 @@ export default class Fetcher {
       await this.fetchPosts(date, root, name, { useCache: false }).then(
         (response) => {
           thisMonthPosts = response.posts;
-          range = new Range(thisMonthPosts, id);
+          scope = new Scope(thisMonthPosts, id);
         },
       );
     }
 
     // 前のものがない場合、先月分を取ってくる
-    if (!range.isValidPrevPost) {
+    if (!scope.isValidPrevPost) {
       this.logger.log(
         '[INFO] Invalid prev post in this month',
-        range,
+        scope,
         today.prevMonth.toString(),
       );
       await this.fetchPosts(today.prevMonth, root, name).then((response) => {
@@ -85,10 +85,10 @@ export default class Fetcher {
     }
 
     // 次のものがない場合、来月分を取ってくる
-    if (!range.isValidNextPost) {
+    if (!scope.isValidNextPost) {
       this.logger.log(
         '[INFO] Invalid next post in this month',
-        range,
+        scope,
         today.nextMonth.toString(),
       );
       await this.fetchPosts(today.nextMonth, root, name).then((response) => {
@@ -96,12 +96,12 @@ export default class Fetcher {
       });
     }
 
-    // 取得した記事を繋いだ状態でrangeを取り直す
+    // 取得した記事を繋いだ状態でscopeを取り直す
     let posts = prevMonthPosts.concat(thisMonthPosts).concat(nextMonthPosts);
-    range = new Range(posts, id);
-    this.logger.log(`[INFO] prev/next posts are detected in ${range}. Exit`);
+    scope = new Scope(posts, id);
+    this.logger.log(`[INFO] prev/next posts are detected in ${scope}. Exit`);
 
-    return range;
+    return scope;
   }
 
   async fetchPosts(date, root, name, opt = {}) {

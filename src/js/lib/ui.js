@@ -27,10 +27,10 @@ export default class UI {
     this.dom.remove();
   }
 
-  showLinks(range) {
+  showLinks(scope) {
     if (this.dom == null) return;
 
-    let { prevPost, nextPost } = range;
+    let { prevPost, nextPost } = scope;
     this.dom.empty();
 
     if (prevPost) {

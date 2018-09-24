@@ -22,9 +22,9 @@ if (match) {
       await fetcher.init();
       await fetcher
         .fetchRange(date, root, name, id)
-        .then((range) => {
-          if (range.isValidPrevPost || range.isValidNextPost) {
-            ui.showLinks(range);
+        .then((scope) => {
+          if (scope.isValidPrevPost || scope.isValidNextPost) {
+            ui.showLinks(scope);
           } else {
             ui.remove();
           }

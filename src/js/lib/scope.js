@@ -1,6 +1,6 @@
 'use strict';
 
-export default class Range {
+export default class Scope {
   constructor(rawPosts, id) {
     id = parseInt(id);
 
@@ -48,7 +48,7 @@ export default class Range {
   }
 }
 
-Range.prototype.toString = function() {
+Scope.prototype.toString = function() {
   return `${this.prevIndex}<-${this.index}->${this.nextIndex}(in ${
     this.posts.length
   } posts)`;
