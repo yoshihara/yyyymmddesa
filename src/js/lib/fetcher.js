@@ -35,7 +35,6 @@ export default class Fetcher {
       (response) => {
         isCachedThisMonth = response.isCache;
         thisMonthPosts = response.posts;
-        scope = new Scope(thisMonthPosts, id);
       },
     );
 
@@ -44,6 +43,8 @@ export default class Fetcher {
         '[WARN] Fetched this month posts in this team is 0. Exit',
       );
       return {};
+    } else {
+      scope = new Scope(thisMonthPosts, id);
     }
 
     if (this.isValidPrevPost && this.isValidNextPost) {
