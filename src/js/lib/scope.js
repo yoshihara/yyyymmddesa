@@ -49,7 +49,11 @@ export default class Scope {
 }
 
 Scope.prototype.toString = function() {
-  return `${this.prevIndex}<-${this.index}->${this.nextIndex}(in ${
-    this.posts.length
-  } posts)`;
+  const formatPrevIndex = this.prevIndex > -1 ? this.prevIndex : '(none)';
+  const formatNextIndex =
+    this.nextIndex < this.posts.length ? this.nextIndex : '(none)';
+
+  return `${formatPrevIndex}<-${
+    this.index
+  }->${formatNextIndex} (posts.length is ${this.posts.length})`;
 };
