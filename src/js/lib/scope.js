@@ -46,14 +46,14 @@ export default class Scope {
   isValidIndex(i) {
     return 0 <= i && i < this.posts.length;
   }
+
+  toString() {
+    const formatPrevIndex = this.prevIndex > -1 ? this.prevIndex : '(none)';
+    const formatNextIndex =
+      this.nextIndex < this.posts.length ? this.nextIndex : '(none)';
+
+    return `${formatPrevIndex}<-${
+      this.index
+    }->${formatNextIndex} (posts.length is ${this.posts.length})`;
+  }
 }
-
-Scope.prototype.toString = function() {
-  const formatPrevIndex = this.prevIndex > -1 ? this.prevIndex : '(none)';
-  const formatNextIndex =
-    this.nextIndex < this.posts.length ? this.nextIndex : '(none)';
-
-  return `${formatPrevIndex}<-${
-    this.index
-  }->${formatNextIndex} (posts.length is ${this.posts.length})`;
-};
