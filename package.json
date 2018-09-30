@@ -15,7 +15,7 @@
     "watch:metadata": "watchy -w metadata -- yarn run build:metadata",
     "watch:html": "watchy -w src/pug -- yarn run build:html",
     "watch": "npm-run-all clean -p watch:*",
-    "fmt": "prettier --write src/js/*.js src/js/**/*.js",
+    "fmt": "prettier --write src/js/*.js src/js/**/*.js __test__/*js",
     "test": "jest"
   },
   "repository": {
