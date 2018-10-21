@@ -32,7 +32,7 @@ export default class Fetcher {
 
     if (!Scope.isSatisfied(posts, id)) {
       const q = this.query(root, date, name);
-      posts = JSON.parse(await this.esa.getPosts(this.teamName, q)).posts;
+      posts = await this.esa.getPosts(this.teamName, q);
       this.logger.log(`  [API] Fetched ${posts.length} posts`);
       this.logger.log('  [API] Fetch query is', q.q);
     }
@@ -64,8 +64,7 @@ export default class Fetcher {
   query(root, date, name) {
     let queries = [];
 
-    // TODO: for(let i = -3; i < 4; i++) {
-    for (let i = -1; i < 2; i++) {
+    for (let i = -2; i < 3; i++) {
       const targetDate = date
         .clone()
         .add(i, 'month')

@@ -20,11 +20,9 @@ describe('Fetcher', () => {
 
   const fetcher = new Fetcher(teamName);
 
-  function setPostsMock(posts, otherResponse) {
+  function setPostsMock(posts) {
     const mock = new Promise((resolve, _) => {
-      const response = otherResponse || {};
-      response.posts = posts;
-      resolve(JSON.stringify(response));
+      resolve(posts);
     });
 
     fetcher.esa.getPosts = jest.fn();

@@ -11,6 +11,10 @@ export default class Scope {
     })[0];
 
     if (!todayPost) return false;
+    const todayPostIndex = posts.indexOf(todayPost);
+
+    if (!posts[todayPostIndex - 1]) return false;
+    if (!posts[todayPostIndex + 1]) return false;
     return true;
   }
 
