@@ -1,3 +1,5 @@
+'use strict';
+
 import Store from './store.js';
 import Esa from './esa.js';
 import Scope from './scope.js';
