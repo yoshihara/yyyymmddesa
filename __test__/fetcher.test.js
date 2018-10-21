@@ -78,6 +78,36 @@ describe('Fetcher', () => {
     describe('target is the date with post', () => {
       const date = new moment(`2018/${thisMonthNum}/01`, 'YYYY/MM/DD');
 
+      describe('when no satisfied posts exist in cache', () => {
+        const posts = [
+          { number: articleId - 1, full_name: fullName(prevMonthNum, 1) },
+          { number: articleId, full_name: fullName(thisMonthNum, 1) },
+          { number: articleId + 1, full_name: fullName(nextMonthNum, 1) },
+        ];
+
+        it('should return scope with posts using API after cache fetching', async () => {
+          setCacheMock([posts[0]]);
+          setPostsMock(posts);
+
+          const actual = await fetcher.fetch(
+            date,
+            rootCategory,
+            name,
+            articleId,
+          );
+
+          const expected = {
+            prevIndex: 0,
+            index: 1,
+            nextIndex: 2,
+            posts: posts,
+          };
+
+          expectScope(expected, actual);
+          expectFetchWithAPICount(1);
+        });
+      });
+
       describe('when satisfied posts exist in cache', () => {
         const posts = [
           { number: articleId - 1, full_name: fullName(prevMonthNum, 1) },
