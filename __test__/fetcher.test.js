@@ -78,38 +78,36 @@ describe('Fetcher', () => {
     describe('target is the date with post', () => {
       const date = new moment(`2018/${thisMonthNum}/01`, 'YYYY/MM/DD');
 
-      describe('3 posts exist', () => {
+      describe('when satisfied posts exist in cache', () => {
         const posts = [
           { number: articleId - 1, full_name: fullName(prevMonthNum, 1) },
           { number: articleId, full_name: fullName(thisMonthNum, 1) },
           { number: articleId + 1, full_name: fullName(nextMonthNum, 1) },
         ];
 
-        describe('with cache', () => {
-          it('should return scope with 3 posts using Cache', async () => {
-            setCacheMock(posts);
+        it('should return scope with posts using Cache', async () => {
+          setCacheMock(posts);
 
-            const actual = await fetcher.fetch(
-              date,
-              rootCategory,
-              name,
-              articleId,
-            );
+          const actual = await fetcher.fetch(
+            date,
+            rootCategory,
+            name,
+            articleId,
+          );
 
-            const expected = {
-              prevIndex: 0,
-              index: 1,
-              nextIndex: 2,
-              posts: posts,
-            };
+          const expected = {
+            prevIndex: 0,
+            index: 1,
+            nextIndex: 2,
+            posts: posts,
+          };
 
-            expectScope(expected, actual);
-            expectFetchWithAPICount(0);
-          });
+          expectScope(expected, actual);
+          expectFetchWithAPICount(0);
         });
 
-        describe('without cache', () => {
-          it('should return scope with 3 posts using API', async () => {
+        describe("when satisfied posts don't exist in cache", () => {
+          it('should return scope with posts using API', async () => {
             setCacheMock([]);
             setPostsMock(posts);
 
