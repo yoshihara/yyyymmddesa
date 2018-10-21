@@ -27,7 +27,7 @@ export default class Fetcher {
 
     const cacheKey = { teamName: this.teamName, root, name };
 
-    let posts = await this.getCache(cacheKey);
+    let posts = await this.getPostsFromCache(cacheKey);
     this.logger.log(`  [CACHE] Get ${posts.length} posts from Cache`);
 
     if (!Scope.isSatisfied(posts, id)) {
@@ -45,7 +45,7 @@ export default class Fetcher {
     return scope;
   }
 
-  async getCache(key) {
+  async getPostsFromCache(key) {
     return (await Store.getCache(key)) || [];
   }
 

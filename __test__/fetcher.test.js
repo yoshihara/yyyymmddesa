@@ -30,7 +30,7 @@ describe('Fetcher', () => {
   }
 
   function setCacheMock(posts) {
-    fetcher.getCache = jest.fn(() => {
+    fetcher.getPostsFromCache = jest.fn(() => {
       return new Promise((resolve, _) => resolve(posts));
     });
   }
