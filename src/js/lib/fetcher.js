@@ -38,12 +38,7 @@ export default class Fetcher {
     }
 
     // TODO: 引数のオブジェクト化
-    // TODO: キャッシュ無視フラグを削除
     await this.setCache(this.teamName, root, name, posts);
-
-    if (posts.length == 0) {
-      return {};
-    }
 
     scope = new Scope(posts, id);
     this.logger.log(`[INFO] prev/next posts are detected in ${scope}. Exit`);

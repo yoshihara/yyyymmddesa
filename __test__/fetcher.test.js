@@ -65,8 +65,12 @@ describe('Fetcher', () => {
         const date = new moment(`2018/${thisMonthNum}/05`, 'YYYY/MM/DD');
 
         const actual = await fetcher.fetch(date, rootCategory, name, articleId);
-
-        const expected = {};
+        const expected = {
+          prevIndex: undefined,
+          index: undefined,
+          nextIndex: undefined,
+          posts: [],
+        };
 
         expectScope(expected, actual);
         expectFetchWithAPICount(1);

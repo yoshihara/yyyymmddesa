@@ -19,10 +19,6 @@ export default class Scope {
   }
 
   constructor(rawPosts, id) {
-    if (!Scope.isSatisfied(rawPosts, id)) {
-      throw Error(`Invalid posts for post id: ${id}`);
-    }
-
     let posts = rawPosts.sort((post1, post2) => {
       let fullName1 = post1.full_name;
       let fullName2 = post2.full_name;
@@ -33,6 +29,7 @@ export default class Scope {
     });
 
     this.posts = posts;
+
     posts.forEach((post) => {
       if (post.number == id) {
         this.index = posts.indexOf(post);
