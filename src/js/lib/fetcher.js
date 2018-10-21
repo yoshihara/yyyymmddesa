@@ -30,8 +30,7 @@ export default class Fetcher {
     let posts = await this.getCache(this.teamName, root, name);
     this.logger.log(`  [CACHE] Get ${posts.length} posts from Cache`);
 
-    // TODO: この判定もscopeに任せる
-    if (posts.length == 0) {
+    if (!Scope.isSatisfied(posts, id)) {
       const q = this.query(root, date, name);
       posts = JSON.parse(await this.esa.getPosts(this.teamName, q)).posts;
       this.logger.log(`  [API] Fetched ${posts.length} posts`);

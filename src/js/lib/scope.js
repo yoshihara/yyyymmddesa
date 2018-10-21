@@ -1,8 +1,23 @@
 'use strict';
 
 export default class Scope {
+  static isSatisfied(posts, id) {
+    if (!posts) return false;
+    if (posts.length == 0) return false;
+
+    let intId = parseInt(id);
+    let todayPost = posts.filter((post) => {
+      return parseInt(post.number) == intId ? post : null;
+    })[0];
+
+    if (!todayPost) return false;
+    return true;
+  }
+
   constructor(rawPosts, id) {
-    id = parseInt(id);
+    if (!Scope.isSatisfied(rawPosts, id)) {
+      throw Error(`Invalid posts for post id: ${id}`);
+    }
 
     let posts = rawPosts.sort((post1, post2) => {
       let fullName1 = post1.full_name;
