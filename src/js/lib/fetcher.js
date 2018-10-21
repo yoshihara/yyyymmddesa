@@ -47,12 +47,23 @@ export default class Fetcher {
     return scope;
   }
 
-  async getPostsFromCache(key) {
-    return (await Store.getCache(key)) || [];
+  async getPostsFromCache(keyElements) {
+    const cacheKey = {
+      teamName: keyElements.teamName,
+      root: keyElements.root,
+      name: keyElements.name,
+    };
+    return (await Store.getCache(cacheKey)) || [];
   }
 
-  async setPostsInCache(key, posts) {
-    await Store.setCache(key, posts).catch((error) => {
+  async setPostsInCache(keyElements, posts) {
+    const cacheKey = {
+      teamName: keyElements.teamName,
+      root: keyElements.root,
+      name: keyElements.name,
+    };
+
+    await Store.setCache(cacheKey, posts).catch((error) => {
       console.error(error);
     });
   }
