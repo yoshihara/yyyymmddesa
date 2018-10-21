@@ -17,8 +17,6 @@ export default class Fetcher {
   }
 
   async fetch(date, root, name, id) {
-    let scope;
-
     this.logger.log(
       `[INFO] Fetch this month posts from cache/API in ${this.teamName} team`,
       root,
@@ -40,7 +38,7 @@ export default class Fetcher {
     // TODO: 引数のオブジェクト化
     await this.setCache(this.teamName, root, name, posts);
 
-    scope = new Scope(posts, id);
+    const scope = new Scope(posts, id);
     this.logger.log(`[INFO] prev/next posts are detected in ${scope}. Exit`);
 
     return scope;
