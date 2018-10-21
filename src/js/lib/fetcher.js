@@ -25,7 +25,9 @@ export default class Fetcher {
 
     this.logger.log(`  target date: ${date}`);
 
-    let posts = await this.getCache(this.teamName, root, name);
+    const cacheKey = { teamName: this.teamName, root, name };
+
+    let posts = await this.getCache(cacheKey);
     this.logger.log(`  [CACHE] Get ${posts.length} posts from Cache`);
 
     if (!Scope.isSatisfied(posts, id)) {
@@ -35,8 +37,7 @@ export default class Fetcher {
       this.logger.log('  [API] Fetch query is', q.q);
     }
 
-    // TODO: 引数のオブジェクト化
-    await this.setCache(this.teamName, root, name, posts);
+    await this.setCache(cacheKey, posts);
 
     const scope = new Scope(posts, id);
     this.logger.log(`[INFO] prev/next posts are detected in ${scope}. Exit`);
@@ -44,12 +45,12 @@ export default class Fetcher {
     return scope;
   }
 
-  async getCache(teamName, root, name) {
-    return (await Store.getCache({ teamName, root, name })) || [];
+  async getCache(key) {
+    return (await Store.getCache(key)) || [];
   }
 
-  async setCache(teamName, root, name, posts) {
-    await Store.setCache({ teamName, root, name }, posts).catch((error) => {
+  async setCache(key, posts) {
+    await Store.setCache(key, posts).catch((error) => {
       console.error(error);
     });
   }
