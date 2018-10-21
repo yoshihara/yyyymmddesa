@@ -63,9 +63,12 @@ export default class Fetcher {
         .clone()
         .add(i, 'month')
         .startOf('month');
-      queries = queries.concat(
-        `in:${[root, targetDate.format('Y/MM')].join('/')}/ user:${name}`,
-      );
+
+      const category = [
+        root.replace(/\/$/, ''),
+        targetDate.format('Y/MM'),
+      ].join('/');
+      queries = queries.concat(`in:${category}/ user:${name}`);
     }
 
     return {
