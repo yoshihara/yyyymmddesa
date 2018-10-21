@@ -34,7 +34,7 @@ export default class Fetcher {
       const q = this.query(root, date, name);
       posts = await this.esa.getPosts(this.teamName, q);
       this.logger.log(`  [API] Fetched ${posts.length} posts`);
-      this.logger.log('  [API] Fetch query is', q.q);
+      this.logger.log('  [API] Fetch query is ', q.q);
     }
 
     await this.setPostsInCache(cacheKey, posts);
