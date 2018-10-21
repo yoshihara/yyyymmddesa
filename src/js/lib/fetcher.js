@@ -37,7 +37,7 @@ export default class Fetcher {
       this.logger.log('  [API] Fetch query is', q.q);
     }
 
-    await this.setCache(cacheKey, posts);
+    await this.setPostsInCache(cacheKey, posts);
 
     const scope = new Scope(posts, id);
     this.logger.log(`[INFO] prev/next posts are detected in ${scope}. Exit`);
@@ -49,7 +49,7 @@ export default class Fetcher {
     return (await Store.getCache(key)) || [];
   }
 
-  async setCache(key, posts) {
+  async setPostsInCache(key, posts) {
     await Store.setCache(key, posts).catch((error) => {
       console.error(error);
     });

@@ -54,7 +54,7 @@ describe('Fetcher', () => {
   describe('#fetch', () => {
     beforeEach(async () => {
       await fetcher.init();
-      fetcher.setCache = jest.fn();
+      fetcher.setPostsInCache = jest.fn();
     });
 
     describe('target is the date without any post', () => {
