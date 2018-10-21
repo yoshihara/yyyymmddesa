@@ -13,18 +13,14 @@ export default class Scope {
       else return 0;
     });
 
-    let todayPost = posts.filter((post) => {
-      if (post.number == id) return post;
-    })[0];
-
-    if (!todayPost) {
-      throw Error(`Invalid posts for post id: ${id}`);
-    }
-
-    this.index = posts.indexOf(todayPost);
-    this.prevIndex = this.index - 1;
-    this.nextIndex = this.index + 1;
     this.posts = posts;
+    posts.forEach((post) => {
+      if (post.number == id) {
+        this.index = posts.indexOf(post);
+        this.prevIndex = this.index - 1;
+        this.nextIndex = this.index + 1;
+      }
+    });
   }
 
   get prevPost() {
