@@ -69,7 +69,7 @@ describe('Fetcher', () => {
     });
 
     describe('target is the date without any post', () => {
-      it('should return {}', async () => {
+      it('should return invalid scope', async () => {
         defineGettingCacheMock([]);
         defineFetchingPostsMock([]);
 
