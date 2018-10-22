@@ -47,7 +47,7 @@ describe('Fetcher', () => {
     return await fetcher.fetch(date, rootCategory, name, articleId);
   }
 
-  function expectScope(expected, actual) {
+  function assertScope(expected, actual) {
     expect(actual.prevIndex).toEqual(expected.prevIndex);
     expect(actual.index).toEqual(expected.index);
     expect(actual.nextIndex).toEqual(expected.nextIndex);
@@ -82,7 +82,7 @@ describe('Fetcher', () => {
           posts: [],
         };
 
-        expectScope(expected, await actualPosts(date));
+        assertScope(expected, await actualPosts(date));
         expectFetchWithAPICount(1);
       });
     });
@@ -109,7 +109,7 @@ describe('Fetcher', () => {
             posts: posts,
           };
 
-          expectScope(expected, await actualPosts(date));
+          assertScope(expected, await actualPosts(date));
           expectFetchWithAPICount(0);
         });
       });
@@ -132,7 +132,7 @@ describe('Fetcher', () => {
               posts: posts,
             };
 
-            expectScope(expected, await actualPosts(date));
+            assertScope(expected, await actualPosts(date));
             expectFetchWithAPICount(1);
           });
         });
@@ -150,7 +150,7 @@ describe('Fetcher', () => {
               posts: posts,
             };
 
-            expectScope(expected, await actualPosts(date));
+            assertScope(expected, await actualPosts(date));
             expectFetchWithAPICount(1);
           });
         });
@@ -168,7 +168,7 @@ describe('Fetcher', () => {
               posts: posts,
             };
 
-            expectScope(expected, await actualPosts(date));
+            assertScope(expected, await actualPosts(date));
             expectFetchWithAPICount(1);
           });
         });
@@ -186,7 +186,7 @@ describe('Fetcher', () => {
               posts: posts,
             };
 
-            expectScope(expected, await actualPosts(date));
+            assertScope(expected, await actualPosts(date));
             expectFetchWithAPICount(1);
           });
         });
