@@ -96,27 +96,12 @@ describe('Fetcher', () => {
         postFixtures.generate(articleId + 1, nextMonthNum, 1),
       ];
 
-      describe('when no satisfied posts exist in cache', () => {
-        it('should return scope with posts using API after cache fetching', async () => {
-          defineGettingCacheMock([posts[0]]);
-          defineFetchingPostsMock(posts);
-
-          const expected = {
-            prevIndex: 0,
-            index: 1,
-            nextIndex: 2,
-            posts: posts,
-          };
-
-          expectScope(expected, await actualPosts(date));
-          expectFetchWithAPICount(1);
-        });
-      });
-
       describe('when satisfied posts exist in cache', () => {
-        it('should return scope with posts using Cache', async () => {
+        beforeEach(() => {
           defineGettingCacheMock(posts);
+        });
 
+        it('should return scope with posts using Cache', async () => {
           const expected = {
             prevIndex: 0,
             index: 1,
@@ -127,12 +112,73 @@ describe('Fetcher', () => {
           expectScope(expected, await actualPosts(date));
           expectFetchWithAPICount(0);
         });
+      });
 
-        describe("when satisfied posts don't exist in cache", () => {
-          it('should return scope with posts using API', async () => {
+      describe('when no satisfied posts exist in cache', () => {
+        beforeEach(() => {
+          defineFetchingPostsMock(posts);
+        });
+
+        describe("when prev post doesn't exist in cache", () => {
+          beforeEach(() => {
+            defineGettingCacheMock([posts[1], posts[2]]);
+          });
+
+          it('should return scope with posts using API after cache fetching', async () => {
+            const expected = {
+              prevIndex: 0,
+              index: 1,
+              nextIndex: 2,
+              posts: posts,
+            };
+
+            expectScope(expected, await actualPosts(date));
+            expectFetchWithAPICount(1);
+          });
+        });
+
+        describe("when next post doesn't exist in cache", () => {
+          beforeEach(() => {
+            defineGettingCacheMock([posts[0], posts[1]]);
+          });
+
+          it('should return scope with posts using API after cache fetching', async () => {
+            const expected = {
+              prevIndex: 0,
+              index: 1,
+              nextIndex: 2,
+              posts: posts,
+            };
+
+            expectScope(expected, await actualPosts(date));
+            expectFetchWithAPICount(1);
+          });
+        });
+
+        describe("when target post doesn't exist in cache", () => {
+          beforeEach(() => {
+            defineGettingCacheMock([posts[0]]);
+          });
+
+          it('should return scope with posts using API after cache fetching', async () => {
+            const expected = {
+              prevIndex: 0,
+              index: 1,
+              nextIndex: 2,
+              posts: posts,
+            };
+
+            expectScope(expected, await actualPosts(date));
+            expectFetchWithAPICount(1);
+          });
+        });
+
+        describe("when any post doesn't exist in cache", () => {
+          beforeEach(() => {
             defineGettingCacheMock([]);
-            defineFetchingPostsMock(posts);
+          });
 
+          it('should return scope with posts using API', async () => {
             const expected = {
               prevIndex: 0,
               index: 1,
