@@ -20,7 +20,7 @@ describe('Fetcher', () => {
 
   const fetcher = new Fetcher(teamName);
 
-  function setPostsMock(posts) {
+  function defineFetchingPostsMock(posts) {
     const mock = new Promise((resolve, _) => {
       resolve(posts);
     });
@@ -68,7 +68,7 @@ describe('Fetcher', () => {
     describe('target is the date without any post', () => {
       it('should return {}', async () => {
         defineGettingCacheMock([]);
-        setPostsMock([]);
+        defineFetchingPostsMock([]);
 
         const date = new moment(`2018/${thisMonthNum}/05`, 'YYYY/MM/DD');
 
@@ -97,7 +97,7 @@ describe('Fetcher', () => {
 
         it('should return scope with posts using API after cache fetching', async () => {
           defineGettingCacheMock([posts[0]]);
-          setPostsMock(posts);
+          defineFetchingPostsMock(posts);
 
           const actual = await fetcher.fetch(
             date,
@@ -149,7 +149,7 @@ describe('Fetcher', () => {
         describe("when satisfied posts don't exist in cache", () => {
           it('should return scope with posts using API', async () => {
             defineGettingCacheMock([]);
-            setPostsMock(posts);
+            defineFetchingPostsMock(posts);
 
             const actual = await fetcher.fetch(
               date,
