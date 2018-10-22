@@ -15,7 +15,7 @@ export default class Esa {
     let posts = [];
 
     while (nextPage) {
-      let body = await this.getPostsPerPage(teamName, q, count);
+      let body = await this.fetchPostsPerPage(teamName, q, count);
 
       posts = posts.concat(body.posts);
       nextPage = body['next_page'];
@@ -25,7 +25,7 @@ export default class Esa {
     return posts;
   }
 
-  getPostsPerPage(teamName, q, page) {
+  fetchPostsPerPage(teamName, q, page) {
     return new Promise((resolve, reject) => {
       let options = {
         port: 443,

@@ -14,7 +14,7 @@ describe('Esa', () => {
     beforeAll(() => {});
 
     it('should request Esa search API', async () => {
-      esa.getPostsPerPage = jest.fn();
+      esa.fetchPostsPerPage = jest.fn();
       const expectedResponses = [
         { posts: ['post1'], next_page: 2 },
         { posts: ['post2'], next_page: 3 },
@@ -22,7 +22,7 @@ describe('Esa', () => {
       ];
 
       expectedResponses.forEach((response) => {
-        esa.getPostsPerPage.mockReturnValueOnce(
+        esa.fetchPostsPerPage.mockReturnValueOnce(
           new Promise((resolve, _) => {
             resolve(response);
           }),
@@ -34,7 +34,7 @@ describe('Esa', () => {
       const actualPosts = await esa.fetchPosts(teamName, q);
 
       for (let page = 1; page < 3; page++) {
-        expect(esa.getPostsPerPage.mock.calls[page - 1]).toEqual([
+        expect(esa.fetchPostsPerPage.mock.calls[page - 1]).toEqual([
           teamName,
           q,
           page,
