@@ -43,6 +43,10 @@ describe('Fetcher', () => {
     });
   }
 
+  async function actualPosts(date) {
+    return await fetcher.fetch(date, rootCategory, name, articleId);
+  }
+
   function expectScope(expected, actual) {
     expect(actual.prevIndex).toEqual(expected.prevIndex);
     expect(actual.index).toEqual(expected.index);
@@ -71,7 +75,6 @@ describe('Fetcher', () => {
 
         const date = new moment(`2018/${thisMonthNum}/05`, 'YYYY/MM/DD');
 
-        const actual = await fetcher.fetch(date, rootCategory, name, articleId);
         const expected = {
           prevIndex: undefined,
           index: undefined,
@@ -79,7 +82,7 @@ describe('Fetcher', () => {
           posts: [],
         };
 
-        expectScope(expected, actual);
+        expectScope(expected, await actualPosts(date));
         expectFetchWithAPICount(1);
       });
     });
@@ -98,13 +101,6 @@ describe('Fetcher', () => {
           defineGettingCacheMock([posts[0]]);
           defineFetchingPostsMock(posts);
 
-          const actual = await fetcher.fetch(
-            date,
-            rootCategory,
-            name,
-            articleId,
-          );
-
           const expected = {
             prevIndex: 0,
             index: 1,
@@ -112,7 +108,7 @@ describe('Fetcher', () => {
             posts: posts,
           };
 
-          expectScope(expected, actual);
+          expectScope(expected, await actualPosts(date));
           expectFetchWithAPICount(1);
         });
       });
@@ -127,13 +123,6 @@ describe('Fetcher', () => {
         it('should return scope with posts using Cache', async () => {
           defineGettingCacheMock(posts);
 
-          const actual = await fetcher.fetch(
-            date,
-            rootCategory,
-            name,
-            articleId,
-          );
-
           const expected = {
             prevIndex: 0,
             index: 1,
@@ -141,7 +130,7 @@ describe('Fetcher', () => {
             posts: posts,
           };
 
-          expectScope(expected, actual);
+          expectScope(expected, await actualPosts(date));
           expectFetchWithAPICount(0);
         });
 
@@ -150,13 +139,6 @@ describe('Fetcher', () => {
             defineGettingCacheMock([]);
             defineFetchingPostsMock(posts);
 
-            const actual = await fetcher.fetch(
-              date,
-              rootCategory,
-              name,
-              articleId,
-            );
-
             const expected = {
               prevIndex: 0,
               index: 1,
@@ -164,7 +146,7 @@ describe('Fetcher', () => {
               posts: posts,
             };
 
-            expectScope(expected, actual);
+            expectScope(expected, await actualPosts(date));
             expectFetchWithAPICount(1);
           });
         });
