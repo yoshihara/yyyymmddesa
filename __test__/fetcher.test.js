@@ -96,19 +96,19 @@ describe('Fetcher', () => {
         postFixtures.generate(articleId + 1, nextMonthNum, 1),
       ];
 
+      const expected = {
+        prevIndex: 0,
+        index: 1,
+        nextIndex: 2,
+        posts: posts,
+      };
+
       describe('when satisfied posts exist in cache', () => {
         beforeEach(() => {
           defineGettingCacheMock(posts);
         });
 
         it('should return scope with posts using Cache', async () => {
-          const expected = {
-            prevIndex: 0,
-            index: 1,
-            nextIndex: 2,
-            posts: posts,
-          };
-
           assertScope(expected, await actualPosts(date));
           assertFetchAPITimes(0);
         });
@@ -125,13 +125,6 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API after cache fetching', async () => {
-            const expected = {
-              prevIndex: 0,
-              index: 1,
-              nextIndex: 2,
-              posts: posts,
-            };
-
             assertScope(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
@@ -143,13 +136,6 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API after cache fetching', async () => {
-            const expected = {
-              prevIndex: 0,
-              index: 1,
-              nextIndex: 2,
-              posts: posts,
-            };
-
             assertScope(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
@@ -161,13 +147,6 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API after cache fetching', async () => {
-            const expected = {
-              prevIndex: 0,
-              index: 1,
-              nextIndex: 2,
-              posts: posts,
-            };
-
             assertScope(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
@@ -179,13 +158,6 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API', async () => {
-            const expected = {
-              prevIndex: 0,
-              index: 1,
-              nextIndex: 2,
-              posts: posts,
-            };
-
             assertScope(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
