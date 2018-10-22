@@ -54,7 +54,7 @@ describe('Fetcher', () => {
     expect(actual.posts).toEqual(expected.posts);
   }
 
-  function expectFetchWithAPICount(expected) {
+  function assertFetchWithAPICount(expected) {
     expect(fetcher.esa.fetchPosts.mock.calls.length).toEqual(expected);
   }
 
@@ -83,7 +83,7 @@ describe('Fetcher', () => {
         };
 
         assertScope(expected, await actualPosts(date));
-        expectFetchWithAPICount(1);
+        assertFetchWithAPICount(1);
       });
     });
 
@@ -110,7 +110,7 @@ describe('Fetcher', () => {
           };
 
           assertScope(expected, await actualPosts(date));
-          expectFetchWithAPICount(0);
+          assertFetchWithAPICount(0);
         });
       });
 
@@ -133,7 +133,7 @@ describe('Fetcher', () => {
             };
 
             assertScope(expected, await actualPosts(date));
-            expectFetchWithAPICount(1);
+            assertFetchWithAPICount(1);
           });
         });
 
@@ -151,7 +151,7 @@ describe('Fetcher', () => {
             };
 
             assertScope(expected, await actualPosts(date));
-            expectFetchWithAPICount(1);
+            assertFetchWithAPICount(1);
           });
         });
 
@@ -169,7 +169,7 @@ describe('Fetcher', () => {
             };
 
             assertScope(expected, await actualPosts(date));
-            expectFetchWithAPICount(1);
+            assertFetchWithAPICount(1);
           });
         });
 
@@ -187,7 +187,7 @@ describe('Fetcher', () => {
             };
 
             assertScope(expected, await actualPosts(date));
-            expectFetchWithAPICount(1);
+            assertFetchWithAPICount(1);
           });
         });
       });
