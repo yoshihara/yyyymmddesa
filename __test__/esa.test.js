@@ -10,7 +10,7 @@ describe('Esa', () => {
   const teamName = 'test-team';
   const esa = new Esa(token);
 
-  describe('#getPosts', () => {
+  describe('#fetchPosts', () => {
     beforeAll(() => {});
 
     it('should request Esa search API', async () => {
@@ -31,7 +31,7 @@ describe('Esa', () => {
 
       const q = 'search query';
 
-      const actualPosts = await esa.getPosts(teamName, q);
+      const actualPosts = await esa.fetchPosts(teamName, q);
 
       for (let page = 1; page < 3; page++) {
         expect(esa.getPostsPerPage.mock.calls[page - 1]).toEqual([

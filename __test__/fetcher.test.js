@@ -25,8 +25,8 @@ describe('Fetcher', () => {
       resolve(posts);
     });
 
-    fetcher.esa.getPosts = jest.fn();
-    fetcher.esa.getPosts.mockReturnValueOnce(mock);
+    fetcher.esa.fetchPosts = jest.fn();
+    fetcher.esa.fetchPosts.mockReturnValueOnce(mock);
   }
 
   function defineGettingCacheMock(posts) {
@@ -52,7 +52,7 @@ describe('Fetcher', () => {
   }
 
   function expectFetchWithAPICount(expected) {
-    expect(fetcher.esa.getPosts.mock.calls.length).toEqual(expected);
+    expect(fetcher.esa.fetchPosts.mock.calls.length).toEqual(expected);
   }
 
   describe('#fetch', () => {

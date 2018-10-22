@@ -9,7 +9,7 @@ export default class Esa {
     this.token = token;
   }
 
-  async getPosts(teamName, q) {
+  async fetchPosts(teamName, q) {
     let count = 1;
     let nextPage = 1;
     let posts = [];
