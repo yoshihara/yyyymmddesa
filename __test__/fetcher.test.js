@@ -30,7 +30,11 @@ describe('Fetcher', () => {
   }
 
   function setCacheMock(posts) {
-    fetcher.getPostsFromCache = jest.fn(() => {
+    fetcher.getPostsFromCache = jest.fn((keyElements) => {
+      expect(keyElements.teamName).toBeDefined();
+      expect(keyElements.root).toBeDefined();
+      expect(keyElements.name).toBeDefined();
+
       return new Promise((resolve, _) => resolve(posts));
     });
   }
