@@ -90,13 +90,13 @@ describe('Fetcher', () => {
     describe('target is the date with post', () => {
       const date = new moment(`2018/${thisMonthNum}/01`, 'YYYY/MM/DD');
 
-      describe('when no satisfied posts exist in cache', () => {
-        const posts = [
-          postFixtures.generate(articleId - 1, prevMonthNum, 1),
-          postFixtures.generate(articleId, thisMonthNum, 1),
-          postFixtures.generate(articleId + 1, nextMonthNum, 1),
-        ];
+      const posts = [
+        postFixtures.generate(articleId - 1, prevMonthNum, 1),
+        postFixtures.generate(articleId, thisMonthNum, 1),
+        postFixtures.generate(articleId + 1, nextMonthNum, 1),
+      ];
 
+      describe('when no satisfied posts exist in cache', () => {
         it('should return scope with posts using API after cache fetching', async () => {
           defineGettingCacheMock([posts[0]]);
           defineFetchingPostsMock(posts);
@@ -114,12 +114,6 @@ describe('Fetcher', () => {
       });
 
       describe('when satisfied posts exist in cache', () => {
-        const posts = [
-          postFixtures.generate(articleId - 1, prevMonthNum, 1),
-          postFixtures.generate(articleId, thisMonthNum, 1),
-          postFixtures.generate(articleId + 1, nextMonthNum, 1),
-        ];
-
         it('should return scope with posts using Cache', async () => {
           defineGettingCacheMock(posts);
 
