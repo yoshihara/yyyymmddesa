@@ -29,7 +29,7 @@ describe('Fetcher', () => {
     fetcher.esa.getPosts.mockReturnValueOnce(mock);
   }
 
-  function setCacheMock(posts) {
+  function defineGettingCacheMock(posts) {
     fetcher.getPostsFromCache = jest.fn((keyElements) => {
       expect(keyElements.teamName).toBeDefined();
       expect(keyElements.root).toBeDefined();
@@ -67,7 +67,7 @@ describe('Fetcher', () => {
 
     describe('target is the date without any post', () => {
       it('should return {}', async () => {
-        setCacheMock([]);
+        defineGettingCacheMock([]);
         setPostsMock([]);
 
         const date = new moment(`2018/${thisMonthNum}/05`, 'YYYY/MM/DD');
@@ -96,7 +96,7 @@ describe('Fetcher', () => {
         ];
 
         it('should return scope with posts using API after cache fetching', async () => {
-          setCacheMock([posts[0]]);
+          defineGettingCacheMock([posts[0]]);
           setPostsMock(posts);
 
           const actual = await fetcher.fetch(
@@ -126,7 +126,7 @@ describe('Fetcher', () => {
         ];
 
         it('should return scope with posts using Cache', async () => {
-          setCacheMock(posts);
+          defineGettingCacheMock(posts);
 
           const actual = await fetcher.fetch(
             date,
@@ -148,7 +148,7 @@ describe('Fetcher', () => {
 
         describe("when satisfied posts don't exist in cache", () => {
           it('should return scope with posts using API', async () => {
-            setCacheMock([]);
+            defineGettingCacheMock([]);
             setPostsMock(posts);
 
             const actual = await fetcher.fetch(
