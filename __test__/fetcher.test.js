@@ -58,7 +58,11 @@ describe('Fetcher', () => {
   describe('#fetch', () => {
     beforeEach(async () => {
       await fetcher.init();
-      fetcher.setPostsInCache = jest.fn();
+      fetcher.setPostsInCache = jest.fn((keyElements, _posts) => {
+        expect(keyElements.teamName).toBeDefined();
+        expect(keyElements.root).toBeDefined();
+        expect(keyElements.name).toBeDefined();
+      });
     });
 
     describe('target is the date without any post', () => {
