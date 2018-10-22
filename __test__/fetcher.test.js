@@ -9,6 +9,9 @@ jest.unmock('../src/js/lib/fetcher.js');
 jest.unmock('../src/js/lib/scope.js');
 jest.unmock('../src/js/lib/logger.js');
 
+import PostFixtures from './fixtures/posts';
+jest.unmock('./fixtures/posts');
+
 describe('Fetcher', () => {
   const teamName = 'test-team';
   const thisMonthNum = 10;
@@ -19,6 +22,7 @@ describe('Fetcher', () => {
   const articleId = 2;
 
   const fetcher = new Fetcher(teamName);
+  const postFixtures = new PostFixtures(rootCategory, name);
 
   function defineFetchingPostsMock(posts) {
     const mock = new Promise((resolve, _) => {
@@ -37,11 +41,6 @@ describe('Fetcher', () => {
 
       return new Promise((resolve, _) => resolve(posts));
     });
-  }
-
-  function fullName(month, day) {
-    const paddingMonthNum = `0${month}`.slice(-2);
-    return `${rootCategory}/2018/${paddingMonthNum}/${day}/${name}`;
   }
 
   function expectScope(expected, actual) {
@@ -90,9 +89,9 @@ describe('Fetcher', () => {
 
       describe('when no satisfied posts exist in cache', () => {
         const posts = [
-          { number: articleId - 1, full_name: fullName(prevMonthNum, 1) },
-          { number: articleId, full_name: fullName(thisMonthNum, 1) },
-          { number: articleId + 1, full_name: fullName(nextMonthNum, 1) },
+          postFixtures.generate(articleId - 1, prevMonthNum, 1),
+          postFixtures.generate(articleId, thisMonthNum, 1),
+          postFixtures.generate(articleId + 1, nextMonthNum, 1),
         ];
 
         it('should return scope with posts using API after cache fetching', async () => {
@@ -120,9 +119,9 @@ describe('Fetcher', () => {
 
       describe('when satisfied posts exist in cache', () => {
         const posts = [
-          { number: articleId - 1, full_name: fullName(prevMonthNum, 1) },
-          { number: articleId, full_name: fullName(thisMonthNum, 1) },
-          { number: articleId + 1, full_name: fullName(nextMonthNum, 1) },
+          postFixtures.generate(articleId - 1, prevMonthNum, 1),
+          postFixtures.generate(articleId, thisMonthNum, 1),
+          postFixtures.generate(articleId + 1, nextMonthNum, 1),
         ];
 
         it('should return scope with posts using Cache', async () => {
