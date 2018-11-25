@@ -24,41 +24,41 @@ describe('Fetcher', () => {
   const fetcher = new Fetcher(teamName);
   const postFixtures = new PostFixtures(rootCategory, name);
 
-  function defineFetchingPostsMock(posts) {
-    const mock = new Promise((resolve, _) => {
-      resolve(posts);
-    });
-
-    fetcher.esa.fetchPosts = jest.fn();
-    fetcher.esa.fetchPosts.mockReturnValueOnce(mock);
-  }
-
-  function defineGettingCacheMock(posts) {
-    fetcher.getPostsFromCache = jest.fn((keyElements) => {
-      expect(keyElements.teamName).toBeDefined();
-      expect(keyElements.root).toBeDefined();
-      expect(keyElements.name).toBeDefined();
-
-      return new Promise((resolve, _) => resolve(posts));
-    });
-  }
-
-  async function actualPosts(date) {
-    return await fetcher.fetch(date, rootCategory, name, articleId);
-  }
-
-  function assertScope(expected, actual) {
-    expect(actual.prevIndex).toEqual(expected.prevIndex);
-    expect(actual.index).toEqual(expected.index);
-    expect(actual.nextIndex).toEqual(expected.nextIndex);
-    expect(actual.posts).toEqual(expected.posts);
-  }
-
-  function assertFetchAPITimes(expected) {
-    expect(fetcher.esa.fetchPosts.mock.calls.length).toEqual(expected);
-  }
-
   describe('#fetch', () => {
+    function defineFetchingPostsMock(posts) {
+      const mock = new Promise((resolve, _) => {
+        resolve(posts);
+      });
+
+      fetcher.esa.fetchPosts = jest.fn();
+      fetcher.esa.fetchPosts.mockReturnValueOnce(mock);
+    }
+
+    function defineGettingCacheMock(posts) {
+      fetcher.getPostsFromCache = jest.fn((keyElements) => {
+        expect(keyElements.teamName).toBeDefined();
+        expect(keyElements.root).toBeDefined();
+        expect(keyElements.name).toBeDefined();
+
+        return new Promise((resolve, _) => resolve(posts));
+      });
+    }
+
+    async function actualPosts(date) {
+      return await fetcher.fetch(date, rootCategory, name, articleId);
+    }
+
+    function assertScope(expected, actual) {
+      expect(actual.prevIndex).toEqual(expected.prevIndex);
+      expect(actual.index).toEqual(expected.index);
+      expect(actual.nextIndex).toEqual(expected.nextIndex);
+      expect(actual.posts).toEqual(expected.posts);
+    }
+
+    function assertFetchAPITimes(expected) {
+      expect(fetcher.esa.fetchPosts.mock.calls.length).toEqual(expected);
+    }
+
     beforeEach(async () => {
       await fetcher.init();
       fetcher.setPostsInCache = jest.fn((keyElements, _posts) => {
