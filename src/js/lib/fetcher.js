@@ -74,7 +74,7 @@ export default class Fetcher {
     for (let i = -2; i < 3; i++) {
       const targetDate = date
         .clone()
-        .add(i, 'month')
+        .add(i - 1, 'month') // NOTE: 0 origin
         .startOf('month');
 
       const category = [

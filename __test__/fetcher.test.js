@@ -165,4 +165,35 @@ describe('Fetcher', () => {
       });
     });
   });
+
+  describe('#query', () => {
+    const root = 'root_category';
+    const targetRange = [
+      ['2018', '09'],
+      ['2018', '10'],
+      ['2018', '11'],
+      ['2018', '12'],
+      ['2019', '01'],
+    ];
+
+    const targetYear = targetRange[2][0];
+    const targetMonth = targetRange[2][1];
+    const targetDate = new moment(
+      new Date(targetYear, targetMonth, 26),
+      'YYYY/MM/DD',
+    );
+    const name = 'author_name';
+
+    const q = targetRange
+      .map((yearMonth) => {
+        return `in:${root}/${yearMonth[0]}/${yearMonth[1]}/ user:${name}`;
+      })
+      .join(' OR ');
+
+    const expected = {
+      q: q,
+    };
+
+    expect(fetcher.query(root, targetDate, name)).toEqual(expected);
+  });
 });
