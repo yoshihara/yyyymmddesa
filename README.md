@@ -2,6 +2,8 @@
 
 Tiny tools for daily report in [esa.io](https://esa.io).
 
+[![CircleCI](https://circleci.com/gh/yoshihara/yyyymmddesa.svg?style=svg)](https://circleci.com/gh/yoshihara/yyyymmddesa)
+
 ## yyyymmddesa
 
 ![screen_shot](https://github.com/yoshihara/yyyymmddesa/blob/master/screenshot.png)
