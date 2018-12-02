@@ -61,3 +61,11 @@ workflows:
   build_and_check_outdated_package:
     jobs:
       - check_outdated_npm_package
+    triggers:
+      - schedule:
+          cron: "0 4 * * 0" # sunday at 13:00 (UTF+9)
+          filters:
+            branches:
+              only:
+                - master
+                - more_sound_more_simplify # TEMP (TODO: Remove before merge)
