@@ -38,13 +38,15 @@ export default class Scope {
     let posts = Scope.sort(rawPosts);
     this.posts = posts;
 
-    posts.forEach((post) => {
-      if (post.number == id) {
-        this.index = posts.indexOf(post);
-        this.prevIndex = this.index - 1;
-        this.nextIndex = this.index + 1;
-      }
+    const todayPost = posts.find((post) => {
+      return post.number == id;
     });
+
+    if (todayPost) {
+      this.index = posts.indexOf(todayPost);
+      this.prevIndex = this.index - 1;
+      this.nextIndex = this.index + 1;
+    }
   }
 
   get prevPost() {
