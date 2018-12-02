@@ -50,7 +50,7 @@ jobs:
 
       - run:
           name: show upgrade npm packages regardless of version lock
-          command: npu
+          command: /usr/local/bin/npm-check-updates
 
 workflows:
   version: 2
