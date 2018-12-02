@@ -46,7 +46,7 @@ jobs:
 
       - run:
           name: show outdated npm packages
-          command: npm outdated
+          command: npm outdated || echo "succeed command focely"
 
       - run:
           name: show upgrade npm packages regardless of version lock
