@@ -1,13 +1,11 @@
-"use strict";
+'use strict';
 
-import style from "../sass/content.sass";
-import moment from "moment";
+import '../sass/content.sass';
 
-import Extractor from "./lib/extractor.js";
-import Fetcher from "./lib/fetcher.js";
-import UI from "./lib/ui.js";
+import Extractor from './lib/extractor.js';
+import Fetcher from './lib/fetcher.js';
+import UI from './lib/ui.js';
 
-const path = window.location.pathname;
 const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 
 if (match) {
@@ -23,16 +21,16 @@ if (match) {
     (async (date, root, name, id) => {
       await fetcher.init();
       await fetcher
-        .fetchRange(date, root, name, id)
-        .then(range => {
-          if (range.isValidPrevPost || range.isValidNextPost) {
-            ui.showLinks(range);
+        .fetch(date, root, name, id)
+        .then((scope) => {
+          if (scope.isValidPrevPost || scope.isValidNextPost) {
+            ui.showLinks(scope);
           } else {
             ui.remove();
           }
         })
-        .catch(err => {
-          console.log("Error occured in fetch:");
+        .catch((err) => {
+          console.log('Error occured in fetch:');
           console.error(err);
           ui.remove();
           return;

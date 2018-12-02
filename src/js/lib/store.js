@@ -1,4 +1,6 @@
-"use strict";
+'use strict';
+
+import Promise from 'bluebird';
 
 export default class Store {
   static getDebugflag() {
@@ -31,7 +33,7 @@ export default class Store {
 
   static setCache(obj, posts) {
     const key = this.key(obj);
-    const cache = posts.map(post => {
+    const cache = posts.map((post) => {
       let { number, full_name, url } = post;
       return { number, full_name, url };
     });
@@ -47,7 +49,7 @@ export default class Store {
   }
 
   static key(obj) {
-    let { date, root, name } = obj;
-    return `cache-${date.format("YMM")}-${root}-${name}`;
+    let { teamName, root, name } = obj;
+    return `cache-${teamName}-${root}-${name}`;
   }
 }

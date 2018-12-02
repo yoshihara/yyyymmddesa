@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-import $ from "jquery";
+import $ from 'jquery';
 
 export default class UI {
   constructor() {
-    this.headDom = $("#comments").parent();
+    this.headDom = $('#comments').parent();
     this.dom = null;
   }
 
@@ -18,7 +18,7 @@ export default class UI {
     if (this.dom == null) return;
 
     let spinner = $(
-      "<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>"
+      "<div id='yyyymmddesa-loading'><i class='fa fa-spinner fa-spin'></i></div>",
     );
     this.dom.wrapInner(spinner);
   }
@@ -27,17 +27,17 @@ export default class UI {
     this.dom.remove();
   }
 
-  showLinks(range) {
+  showLinks(scope) {
     if (this.dom == null) return;
 
-    let { prevPost, nextPost } = range;
+    let { prevPost, nextPost } = scope;
     this.dom.empty();
 
     if (prevPost) {
       this.dom.append(
         `<div id='yyyymmddesa-prev-link'><a href='${prevPost.url}'>${
           prevPost.full_name
-        }</a></div>`
+        }</a></div>`,
       );
     }
 
@@ -45,12 +45,12 @@ export default class UI {
       this.dom.append(
         `<div id='yyyymmddesa-next-link'><a href='${nextPost.url}'>${
           nextPost.full_name
-        }</a></div>`
+        }</a></div>`,
       );
     }
 
     if (prevPost || nextPost) {
-      const description = "This links are created by yyyymmddesa.";
+      const description = 'This links are created by yyyymmddesa.';
       const descriptionDom = `<div id='yyyymmddesa-description'>${description}</div>`;
       this.dom.append(descriptionDom);
     }

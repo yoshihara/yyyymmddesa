@@ -5,17 +5,18 @@
   "main": "content.js",
   "private": false,
   "scripts": {
-    "package": "yarn build && zip package.zip -j build/*",
+    "package": "NODE_ENV=production npm build && zip package.zip -j build/*",
     "clean": "rm -rf build/ && mkdir -p build",
     "build:module": "webpack --config webpack.config.js",
     "build:metadata": "rm -rf build/*.png build/manifest.json && cp -a metadata/* build/",
     "build:html": "rm -rf build/*.html && pug -s src/pug -o build",
     "build": "npm-run-all clean build:*",
-    "watch:module": "watchy -w src/js -w src/sass -w webpack.config.js -- yarn run build:module",
-    "watch:metadata": "watchy -w metadata -- yarn run build:metadata",
-    "watch:html": "watchy -w src/pug -- yarn run build:html",
-    "watch": "npm-run-all clean -p watch:*",
-    "fmt": "prettier --write src/js/*.js src/js/**/*.js"
+    "watch:module": "watchy -w 'src/js/**/*.js' -w 'src/sass/**/*.sass' -w webpack.config.js -- npm run build:module",
+    "watch:metadata": "watchy -w 'metadata/*' -- npm run build:metadata",
+    "watch:html": "watchy -w 'src/pug/**/*.pug' -- npm run build:html",
+    "watch": "NODE_ENV=development npm-run-all clean -p watch:*",
+    "fmt": "prettier --write src/js/*.js src/js/**/*.js __test__/*js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -28,24 +29,55 @@
   "license": "MIT",
   "homepage": "https://github.com/yoshihara/yyyymmddesa",
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.40",
-    "@babel/plugin-transform-runtime": "^7.0.0-beta.40",
-    "@babel/preset-env": "^7.0.0-beta.40",
-    "@babel/runtime": "^7.0.0-beta.40",
-    "babel-loader": "8.0.0-beta.0",
-    "css-loader": "^0.28.10",
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/runtime": "^7.1.5",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^1.0.1",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-jest": "^22.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "expose-loader": "^0.7.3",
-    "node-sass": "^4.5.3",
-    "npm-run-all": "^4.0.2",
-    "prettier": "^1.11.1",
+    "husky": "^1.2.0",
+    "jest": "^23.6.0",
+    "lint-staged": "^8.1.0",
+    "node-sass": "^4.10.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.15.3",
     "pug-cli": "^1.0.0-alpha6",
-    "sass-loader": "^6.0.7",
-    "style-loader": "^0.20.3",
-    "watchy": "^0.7.0",
-    "webpack": "^3.5.4"
+    "regenerator-runtime": "^0.13.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "watchy": "^0.9.5",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
+    "bluebird": "^3.5.2",
     "jquery": "^3.2.1",
     "moment": "^2.21.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "eslint --fix"
+    ]
+  },
+  "jest": {
+    "automock": true,
+    "unmockedModulePathPatterns": [
+      "node_modules"
+    ],
+    "setupFiles": [
+      "./__test__/setup-jest.js"
+    ]
   }
 }

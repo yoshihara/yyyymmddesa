@@ -1,7 +1,7 @@
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
+  mode: process.env.NODE_ENV,
   entry: {
     options: './src/js/options.js',
     content: './src/js/content.js'
@@ -33,9 +33,4 @@ module.exports = {
       }
     ]
   }
-  // plugins: [
-  //   new webpack.ProvidePlugin({
-  //     jQuery: 'jquery'
-  //   })
-  // ]
 };
