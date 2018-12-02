@@ -1,66 +1,16 @@
 version: 2.1
-description: test # TODO
 
 orbs:
-  chrome-extension-orb:
-    executors:
-      node_executor:
-        docker:
-          - image: circleci/node:11.3.0
-    commands:
-      npm_install:
-        steps:
-          - checkout
-          - restore_cache:
-              keys:
-              - v1-dependencies-{{ checksum "package.json" }}
-              # fallback to using the latest cache if no exact match is found
-              - v1-dependencies-
-
-          - run: npm install
-
-          - save_cache:
-              key: v1-dependencies-{{ checksum "package.json" }}
-              paths:
-                - "./node_modules"
-      run_test:
-        steps:
-          - run: npm test
-
-      run_npm_outdated:
-        steps:
-          - run:
-              name: show outdated npm packages
-              command: npm outdated || echo "succeed command focely" # TODO: optional succeed
-
-      run_npm-check-updates:
-        steps:
-          - run: sudo npm install -g npm-check-updates
-          - run:
-              name: show upgrade npm packages regardless of version lock
-              command: /usr/local/bin/npm-check-updates
-
-    jobs:
-      test:
-        executor: node_executor
-        steps:
-          - npm_install
-          - run_test
-
-      check_outdated_npm_package:
-        executor: node_executor
-        steps:
-          - npm_install
-          - run_npm_outdated
-          - run_npm-check-updates
+  my-chrome-extension-orb: yoshihara/chrome-extension-orb@volatile
 
 workflows:
   build_and_test:
     jobs:
-      - chrome-extension-orb/test
+      - my-chrome-extension-orb/test
+
   build_and_check_outdated_package:
     jobs:
-      - chrome-extension-orb/check_outdated_npm_package
+      - my-chrome-extension-orb/check_outdated_npm_package
     triggers:
       - schedule:
           cron: "0 4 * * 0" # sunday at 13:00 (UTF+9)
