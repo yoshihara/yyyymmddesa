@@ -68,4 +68,3 @@ workflows:
             branches:
               only:
                 - master
-                - more_sound_more_simplify # TEMP (TODO: Remove before merge)
