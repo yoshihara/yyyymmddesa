@@ -42,7 +42,7 @@ jobs:
           paths:
             - "./node_modules"
 
-      - run: npm install -g npm-check-updates
+      - run: sudo npm install -g npm-check-updates
 
       - run:
           name: show outdated npm packages
