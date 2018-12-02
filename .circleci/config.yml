@@ -1,11 +1,13 @@
+container_config: &container_config
+  docker:
+    - image: circleci/node:11.3.0
+
+  working_directory: ~/workspace
+
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:11.3.0
-
-    working_directory: ~/workspace
-
+  test:
+    <<: *container_config
     steps:
       - checkout
       - restore_cache:
@@ -22,3 +24,9 @@ jobs:
             - "./node_modules"
 
       - run: npm test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test
