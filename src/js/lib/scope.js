@@ -1,6 +1,19 @@
 'use strict';
 
 export default class Scope {
+  static sort(posts) {
+    const sorted = posts.sort((post1, post2) => {
+      let fullName1 = post1.full_name;
+      let fullName2 = post2.full_name;
+
+      if (fullName1 > fullName2) return 1;
+      else if (fullName1 < fullName2) return -1;
+      else return 0;
+    });
+
+    return sorted;
+  }
+
   static isSatisfied(posts, id) {
     if (!posts) return false;
     if (posts.length == 0) return false;
@@ -11,6 +24,9 @@ export default class Scope {
     })[0];
 
     if (!todayPost) return false;
+
+    posts = Scope.sort(posts);
+
     const todayPostIndex = posts.indexOf(todayPost);
 
     if (!posts[todayPostIndex - 1]) return false;
@@ -19,15 +35,7 @@ export default class Scope {
   }
 
   constructor(rawPosts, id) {
-    let posts = rawPosts.sort((post1, post2) => {
-      let fullName1 = post1.full_name;
-      let fullName2 = post2.full_name;
-
-      if (fullName1 > fullName2) return 1;
-      else if (fullName1 < fullName2) return -1;
-      else return 0;
-    });
-
+    let posts = Scope.sort(rawPosts);
     this.posts = posts;
 
     posts.forEach((post) => {
