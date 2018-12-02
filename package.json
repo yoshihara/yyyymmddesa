@@ -11,9 +11,9 @@
     "build:metadata": "rm -rf build/*.png build/manifest.json && cp -a metadata/* build/",
     "build:html": "rm -rf build/*.html && pug -s src/pug -o build",
     "build": "npm-run-all clean build:*",
-    "watch:module": "watchy -w src/js -w src/sass -w webpack.config.js -- npm run build:module",
-    "watch:metadata": "watchy -w metadata -- npm run build:metadata",
-    "watch:html": "watchy -w src/pug -- npm run build:html",
+    "watch:module": "watchy -w 'src/js/**/*.js' -w 'src/sass/**/*.sass' -w webpack.config.js -- npm run build:module",
+    "watch:metadata": "watchy -w 'metadata/*' -- npm run build:metadata",
+    "watch:html": "watchy -w 'src/pug/**/*.pug' -- npm run build:html",
     "watch": "NODE_ENV=development npm-run-all clean -p watch:*",
     "fmt": "prettier --write src/js/*.js src/js/**/*.js __test__/*js",
     "test": "jest"
