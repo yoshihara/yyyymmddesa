@@ -30,3 +30,11 @@ $ npm install
 $ npm run build
 $ npm run watch
 ```
+
+### update packages
+
+```sh
+$ npm install -g npm-check-updates
+$ ncu -u
+$ npm update
+```
