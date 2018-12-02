@@ -26,7 +26,7 @@ With this extension, you opened a post in esa.io having `yyyy/mm/dd` category, i
 ## develop
 
 ```sh
-$ yarn install
-$ yarn run build
-$ yarn run watch
+$ npm install
+$ npm run build
+$ npm run watch
 ```
