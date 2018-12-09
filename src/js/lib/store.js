@@ -21,11 +21,11 @@ export default class Store {
 
   static getCache(obj) {
     const key = this.key(obj);
-    let cache = {};
-    cache[key] = null;
+    let initializedCache = {};
+    initializedCache[key] = null;
 
     return new Promise((resolve, _reject) => {
-      chrome.storage.local.get(cache, function(cache) {
+      chrome.storage.local.get(initializedCache, function(cache) {
         resolve(JSON.parse(cache[key]));
       });
     });
