@@ -5,7 +5,7 @@
   "main": "content.js",
   "private": false,
   "scripts": {
-    "package": "NODE_ENV=production npm build && zip package.zip -j build/*",
+    "package": "NODE_ENV=production npm run build && zip package.zip -j build/*",
     "clean": "rm -rf build/ && mkdir -p build",
     "build:module": "webpack --config webpack.config.js",
     "build:metadata": "rm -rf build/*.png build/manifest.json && cp -a metadata/* build/",
