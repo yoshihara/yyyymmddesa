@@ -5,7 +5,7 @@
   "main": "content.js",
   "private": false,
   "scripts": {
-    "package": "NODE_ENV=production npm run build && zip package.zip -j build/*",
+    "package": "npm run build && zip package.zip -j build/*",
     "clean": "rm -rf build/ && mkdir -p build",
     "build:module": "webpack --config webpack.config.js",
     "build:metadata": "rm -rf build/*.png build/manifest.json && cp -a metadata/* build/",
@@ -14,7 +14,7 @@
     "watch:module": "watchy -w 'src/js/**/*.js' -w 'src/sass/**/*.sass' -w webpack.config.js -- npm run build:module",
     "watch:metadata": "watchy -w 'metadata/*' -- npm run build:metadata",
     "watch:html": "watchy -w 'src/pug/**/*.pug' -- npm run build:html",
-    "watch": "NODE_ENV=development npm-run-all clean -p watch:*",
+    "watch": "npm-run-all clean -p watch:*",
     "fmt": "prettier --write src/js/*.js src/js/**/*.js __test__/*js",
     "test": "jest"
   },
