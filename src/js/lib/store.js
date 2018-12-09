@@ -33,15 +33,15 @@ export default class Store {
 
   static setCache(obj, posts) {
     const key = this.key(obj);
-    const cache = posts.map((post) => {
+    const postsCache = posts.map((post) => {
       let { number, full_name, url } = post;
       return { number, full_name, url };
     });
-    let defaultCache = {};
-    defaultCache[key] = JSON.stringify(cache);
+    let cache = {};
+    cache[key] = JSON.stringify(postsCache);
 
     return new Promise((resolve, reject) => {
-      chrome.storage.local.set(defaultCache, function() {
+      chrome.storage.local.set(cache, function() {
         if (chrome.runtime.lastError) reject(chrome.runtime.lastError);
         resolve();
       });
