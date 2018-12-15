@@ -39,9 +39,12 @@ export default class Extractor {
     let createdByText = $('.post-header')
       .find('.post-header__meta')
       .find('.post-author')
-      .find('.post-author__user')[0].innerText;
+      .find('.post-author__user')[0].textContent;
 
-    return createdByText.replace(/Created by /, '');
+    return createdByText
+      .replace(/\r?\n/g, '')
+      .replace(/Created by/, '')
+      .trim();
   }
 
   static teamName() {

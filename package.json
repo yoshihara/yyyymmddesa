@@ -73,6 +73,7 @@
   },
   "jest": {
     "automock": true,
+    "testURL": "https://bomberowl-test.esa.io/posts/1234",
     "unmockedModulePathPatterns": [
       "node_modules"
     ],
