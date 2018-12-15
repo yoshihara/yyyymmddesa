@@ -51,7 +51,7 @@ const headerWithRootCategory = `
 </div>
 `;
 
-const headerWithoutRoot = `
+const headerWithoutRootCategory = `
 <div class="post-header">
   <div class="post-header__left">
     <div class="posts-title">
@@ -102,4 +102,4 @@ const headerWithoutRoot = `
 </div>
 `;
 
-export { headerWithRootCategory, headerWithoutRoot };
+export { headerWithRootCategory, headerWithoutRootCategory };

@@ -3,7 +3,7 @@
 import moment from 'moment';
 
 import Extractor from '../src/js/lib/extractor';
-import { headerWithRootCategory, headerWithoutRoot } from './fixtures/postHeaders';
+import { headerWithRootCategory, headerWithoutRootCategory } from './fixtures/postHeaders';
 jest.unmock('../src/js/lib/extractor.js');
 
 describe('Extractor', () => {
@@ -26,7 +26,7 @@ describe('Extractor', () => {
 
     describe('when target post has no category before yyyy/mm/dd', () => {
       beforeEach(() => {
-        document.body.innerHTML = headerWithoutRoot;
+        document.body.innerHTML = headerWithoutRootCategory;
       });
 
       it('should return info', () => {
