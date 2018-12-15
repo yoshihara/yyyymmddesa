@@ -3,7 +3,11 @@
 import moment from 'moment';
 
 import Extractor from '../src/js/lib/extractor';
-import { headerWithRootCategory, headerWithRootCategories, headerWithoutRootCategory } from './fixtures/postHeaders';
+import {
+  headerWithRootCategory,
+  headerWithRootCategories,
+  headerWithoutRootCategory,
+} from './fixtures/postHeaders';
 jest.unmock('../src/js/lib/extractor.js');
 
 describe('Extractor', () => {
