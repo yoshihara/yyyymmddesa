@@ -8,7 +8,7 @@ export default class Extractor {
     const match = this.category().match(/^\/(.+\/)?(\d\d\d\d\/\d\d\/\d\d)$/);
     if (!match) return {};
 
-    const root = match[1] !== undefined ? match[1].replace('/', '') : '';
+    const root = match[1] !== undefined ? match[1].replace(/\/$/, '') : '';
     const yearAndMonth = match[2];
     const date = new moment(yearAndMonth, 'YYYY/MM/DD');
 

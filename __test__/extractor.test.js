@@ -3,12 +3,12 @@
 import moment from 'moment';
 
 import Extractor from '../src/js/lib/extractor';
-import { headerWithRootCategory, headerWithoutRootCategory } from './fixtures/postHeaders';
+import { headerWithRootCategory, headerWithRootCategories, headerWithoutRootCategory } from './fixtures/postHeaders';
 jest.unmock('../src/js/lib/extractor.js');
 
 describe('Extractor', () => {
   describe('.currentPostInfo', () => {
-    describe('when target post has category before yyyy/mm/dd', () => {
+    describe('when target post has a category before yyyy/mm/dd', () => {
       beforeEach(() => {
         document.body.innerHTML = headerWithRootCategory;
       });
@@ -19,6 +19,22 @@ describe('Extractor', () => {
           date: date,
           name: 'hyoshihara04',
           root: 'daily-report',
+          teamName: 'bomberowl-test',
+        });
+      });
+    });
+
+    describe('when target post has categories before yyyy/mm/dd', () => {
+      beforeEach(() => {
+        document.body.innerHTML = headerWithRootCategories;
+      });
+
+      it('should return info', () => {
+        const date = new moment('2018/12/10', 'YYYY/MM/DD');
+        expect(Extractor.currentPostInfo()).toEqual({
+          date: date,
+          name: 'hyoshihara04',
+          root: 'daily/hyoshihara04',
           teamName: 'bomberowl-test',
         });
       });
