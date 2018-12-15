@@ -11,8 +11,6 @@ describe('Esa', () => {
   const esa = new Esa(token);
 
   describe('#fetchPosts', () => {
-    beforeAll(() => {});
-
     it('should request Esa search API', async () => {
       esa.fetchPostsPerPage = jest.fn();
       const expectedResponses = [
