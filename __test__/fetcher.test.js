@@ -182,18 +182,21 @@ describe('Fetcher', () => {
       new Date(targetYear, targetMonth, 26),
       'YYYY/MM/DD',
     );
+
     const name = 'author_name';
 
-    const q = targetRange
-      .map((yearMonth) => {
-        return `in:${root}/${yearMonth[0]}/${yearMonth[1]}/ user:${name}`;
-      })
-      .join(' OR ');
+    it('should return query for posts in 2018/09 ~ 2019/01 created by specified user', () => {
+      const q = targetRange
+        .map((yearMonth) => {
+          return `in:${root}/${yearMonth[0]}/${yearMonth[1]}/ user:${name}`;
+        })
+        .join(' OR ');
 
-    const expected = {
-      q: q,
-    };
+      const expected = {
+        q: q,
+      };
 
-    expect(fetcher.query(root, targetDate, name)).toEqual(expected);
+      expect(fetcher.query(root, targetDate, name)).toEqual(expected);
+    });
   });
 });
