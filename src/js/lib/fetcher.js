@@ -1,5 +1,7 @@
 'use strict';
 
+import moment from 'moment';
+
 import Store from './store.js';
 import Esa from './esa.js';
 import Scope from './scope.js';
@@ -40,11 +42,10 @@ export default class Fetcher {
     }
 
     await this.setPostsInCache(cacheKey, posts);
-
-    const scope = new Scope(posts, id);
-    this.logger.log(`[INFO] prev/next posts are detected in ${scope}. Exit`);
-
-    return scope;
+    this.logger.log(
+      `[INFO] prev/next posts are detected for the post: ${id}. Exit`,
+    );
+    return { posts, id };
   }
 
   async getPostsFromCache(keyElements) {
@@ -72,8 +73,7 @@ export default class Fetcher {
     let queries = [];
 
     for (let i = -2; i < 3; i++) {
-      const targetDate = date
-        .clone()
+      const targetDate = new moment(date, 'YYYY/MM/DD')
         .add(i, 'month')
         .startOf('month');
 

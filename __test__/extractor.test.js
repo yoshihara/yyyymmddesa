@@ -1,7 +1,5 @@
 'use strict';
 
-import moment from 'moment';
-
 import Extractor from '../src/js/lib/extractor';
 import {
   headerWithRootCategory,
@@ -18,9 +16,8 @@ describe('Extractor', () => {
       });
 
       it('should return info', () => {
-        const date = new moment('2017/12/11', 'YYYY/MM/DD');
         expect(Extractor.currentPostInfo()).toEqual({
-          date: date,
+          date: '2017/12/11',
           name: 'hyoshihara04',
           root: 'daily-report',
           teamName: 'bomberowl-test',
@@ -34,9 +31,8 @@ describe('Extractor', () => {
       });
 
       it('should return info', () => {
-        const date = new moment('2018/12/10', 'YYYY/MM/DD');
         expect(Extractor.currentPostInfo()).toEqual({
-          date: date,
+          date: '2018/12/10',
           name: 'hyoshihara04',
           root: 'daily/hyoshihara04',
           teamName: 'bomberowl-test',
@@ -50,9 +46,8 @@ describe('Extractor', () => {
       });
 
       it('should return info', () => {
-        const date = new moment('2018/02/16', 'YYYY/MM/DD');
         expect(Extractor.currentPostInfo()).toEqual({
-          date: date,
+          date: '2018/02/16',
           name: 'hyoshihara04',
           root: '',
           teamName: 'bomberowl-test',

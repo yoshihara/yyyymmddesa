@@ -3,8 +3,8 @@
 import '../sass/content.sass';
 
 import Extractor from './lib/extractor.js';
-import Fetcher from './lib/fetcher.js';
 import UI from './lib/ui.js';
+import Scope from './lib/scope.js';
 
 const match = window.location.pathname.match(/^\/posts\/(\d+)$/);
 
@@ -14,27 +14,29 @@ if (match) {
   const { root, date, name, teamName } = Extractor.currentPostInfo();
 
   if (date && name && teamName) {
-    const fetcher = new Fetcher(teamName);
     ui.prepare();
     ui.showLoading();
 
-    (async (date, root, name, id) => {
-      await fetcher.init();
-      await fetcher
-        .fetch(date, root, name, id)
-        .then((scope) => {
+    (async (teamName, date, root, name, id) => {
+      chrome.runtime.sendMessage(
+        { contentScriptQuery: 'fetchEsaPosts', teamName, date, root, name, id },
+        ({ posts, id }, error) => {
+          if (error) {
+            console.log('Error occured in fetch:');
+            console.error(error);
+
+            ui.remove();
+            return;
+          }
+
+          const scope = new Scope(posts, id);
           if (scope.isValidPrevPost || scope.isValidNextPost) {
             ui.showLinks(scope);
           } else {
             ui.remove();
           }
-        })
-        .catch((err) => {
-          console.log('Error occured in fetch:');
-          console.error(err);
-          ui.remove();
-          return;
-        });
-    })(date, root, name, id);
+        },
+      );
+    })(teamName, date, root, name, id);
   }
 }

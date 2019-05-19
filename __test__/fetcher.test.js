@@ -48,10 +48,8 @@ describe('Fetcher', () => {
       return await fetcher.fetch(date, rootCategory, name, articleId);
     }
 
-    function assertScope(expected, actual) {
-      expect(actual.prevIndex).toEqual(expected.prevIndex);
-      expect(actual.index).toEqual(expected.index);
-      expect(actual.nextIndex).toEqual(expected.nextIndex);
+    function assertScopeParams(expected, actual) {
+      expect(actual.id).toEqual(expected.id);
       expect(actual.posts).toEqual(expected.posts);
     }
 
@@ -73,16 +71,8 @@ describe('Fetcher', () => {
         defineGettingCacheMock([]);
         defineFetchingPostsMock([]);
 
-        const date = new moment(`2018/${thisMonthNum}/05`, 'YYYY/MM/DD');
-
-        const expected = {
-          prevIndex: undefined,
-          index: undefined,
-          nextIndex: undefined,
-          posts: [],
-        };
-
-        assertScope(expected, await actualPosts(date));
+        const actual = await actualPosts(`2018/${thisMonthNum}/05`);
+        assertScopeParams({ id: articleId, posts: [] }, actual);
         assertFetchAPITimes(1);
       });
     });
@@ -97,9 +87,7 @@ describe('Fetcher', () => {
       ];
 
       const expected = {
-        prevIndex: 0,
-        index: 1,
-        nextIndex: 2,
+        id: articleId,
         posts: posts,
       };
 
@@ -109,7 +97,7 @@ describe('Fetcher', () => {
         });
 
         it('should return scope with posts using Cache', async () => {
-          assertScope(expected, await actualPosts(date));
+          assertScopeParams(expected, await actualPosts(date));
           assertFetchAPITimes(0);
         });
       });
@@ -125,7 +113,7 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API after cache fetching', async () => {
-            assertScope(expected, await actualPosts(date));
+            assertScopeParams(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
         });
@@ -136,7 +124,7 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API after cache fetching', async () => {
-            assertScope(expected, await actualPosts(date));
+            assertScopeParams(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
         });
@@ -147,7 +135,7 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API after cache fetching', async () => {
-            assertScope(expected, await actualPosts(date));
+            assertScopeParams(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
         });
@@ -158,7 +146,7 @@ describe('Fetcher', () => {
           });
 
           it('should return scope with posts using API', async () => {
-            assertScope(expected, await actualPosts(date));
+            assertScopeParams(expected, await actualPosts(date));
             assertFetchAPITimes(1);
           });
         });
