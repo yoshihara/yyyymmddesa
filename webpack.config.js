@@ -4,7 +4,8 @@ module.exports = {
   mode: 'production', // NOTE: developmentだとoptions.htmlでのJS読み込みがCSPに引っかかってevalに失敗するのでdevelopment
   entry: {
     options: './src/js/options.js',
-    content: './src/js/content.js'
+    content: './src/js/content.js',
+    background: './src/js/background.js'
   },
   output: {
     path: path.resolve(__dirname, 'build'),
