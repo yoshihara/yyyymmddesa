@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production', // NOTE: developmentだとoptions.htmlでのJS読み込みがCSPに引っかかってevalに失敗するのでdevelopment
+  mode: 'production', // NOTE: developmentだとoptions.htmlでのJS読み込みがCSPに引っかかってevalに失敗するのでproduction
   entry: {
     options: './src/js/options.js',
     content: './src/js/content.js',
