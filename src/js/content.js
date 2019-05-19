@@ -17,26 +17,29 @@ if (match) {
     ui.prepare();
     ui.showLoading();
 
-    (async (teamName, date, root, name, id) => {
-      chrome.runtime.sendMessage(
-        { contentScriptQuery: 'fetchEsaPosts', teamName, date, root, name, id },
-        ({ posts, id }, error) => {
-          if (error) {
-            console.log('Error occured in fetch:');
-            console.error(error);
+    const message = {
+      contentScriptQuery: 'fetchEsaPosts',
+      teamName,
+      date,
+      root,
+      name,
+      id,
+    };
+    chrome.runtime.sendMessage(message, ({ posts, id }, error) => {
+      if (error) {
+        console.log('Error occured in fetch:');
+        console.error(error);
 
-            ui.remove();
-            return;
-          }
+        ui.remove();
+        return;
+      }
 
-          const scope = new Scope(posts, id);
-          if (scope.isValidPrevPost || scope.isValidNextPost) {
-            ui.showLinks(scope);
-          } else {
-            ui.remove();
-          }
-        },
-      );
-    })(teamName, date, root, name, id);
+      const scope = new Scope(posts, id);
+      if (scope.isValidPrevPost || scope.isValidNextPost) {
+        ui.showLinks(scope);
+      } else {
+        ui.remove();
+      }
+    });
   }
 }
