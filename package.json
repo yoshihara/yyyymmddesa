@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "bluebird": "^3.7.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0"
   },
   "husky": {
